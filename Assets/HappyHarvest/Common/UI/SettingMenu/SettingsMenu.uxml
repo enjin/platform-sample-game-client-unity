@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/HappyHarvest/Common/UI/SettingMenu/SettingMenu.uss?fileID=7433441132597879392&amp;guid=50080f77971bd1b45b184c84d41409c1&amp;type=3#SettingMenu" />
+    <ui:VisualElement name="SettingMenu" enabled="true" style="overflow: visible; display: flex; visibility: hidden; opacity: 1;">
+        <ui:VisualElement name="Background" style="opacity: 1; display: flex; height: 450px;">
+            <ui:Label tabindex="-1" text="Settings" display-tooltip-when-elided="true" name="Title" />
+            <ui:Button text="X" display-tooltip-when-elided="true" name="CloseButton" />
+            <ui:VisualElement name="Content" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: auto;">
+                <ui:VisualElement name="Line" class="space-line" style="background-color: rgba(0, 0, 0, 0);" />
+                <ui:DropdownField label="Resolution" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="ResolutionDropdown" />
+                <ui:Toggle label="Fullscreen" name="FullscreenToggle" />
+                <ui:VisualElement name="Line" class="space-line" style="background-color: rgba(0, 0, 0, 0);" />
+                <ui:Slider picking-mode="Ignore" label="Main Volume" value="1" high-value="1" name="MainVolume" />
+                <ui:Slider picking-mode="Ignore" label="Music Volume" value="1" high-value="1" name="MusicVolume" />
+                <ui:Slider picking-mode="Ignore" label="SFX Volume" value="1" high-value="1" name="SFXVolume" />
+            </ui:VisualElement>
+            <ui:VisualElement name="BottomPart" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:Button text="Login" display-tooltip-when-elided="true" name="OpenLoginButton" tooltip="Use this to create an account and login." style="margin-bottom: 20px;" />
+                <ui:Button text="Quit Game" display-tooltip-when-elided="true" name="QuitButton" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:Button text="Menu" display-tooltip-when-elided="true" name="OpenSettingMenuButton" style="position: absolute; right: 20px; top: 25px; border-left-color: rgb(0, 127, 226); border-right-color: rgb(0, 127, 226); border-top-color: rgb(0, 127, 226); border-bottom-color: rgb(0, 127, 226); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 41px; border-bottom-left-radius: 41px; border-top-right-radius: 41px; border-bottom-right-radius: 41px; color: rgb(255, 255, 255); font-size: 48px; width: 154px; height: 89px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 12px; -unity-font-style: bold; background-color: rgba(0, 127, 226, 0); background-image: url(&quot;project://database/Assets/HappyHarvest/Art/UI/Sprite_Button_Blue.png?fileID=21300000&amp;guid=f4ed70e9a197ed14cbaaba89ea27dd68&amp;type=3#Sprite_Button_Blue&quot;); justify-content: flex-start; text-shadow: 0 60.9px 0.7px rgb(26, 94, 221);" />
+    <ui:VisualElement name="MessageBox" style="flex-grow: 1; position: absolute; top: 33%; left: 33%; right: 33%; bottom: auto; visibility: hidden; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+        <ui:VisualElement name="MessageBoxBackground" style="flex-grow: 1; background-color: rgb(2, 127, 226); border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px;">
+            <ui:Label text="There was a problem logging you in!" name="MessageLabel" style="right: auto; bottom: auto; top: auto; left: auto; -unity-text-align: upper-center; margin-top: 16px; margin-bottom: 16px; color: rgb(255, 255, 255); white-space: pre-wrap; text-overflow: ellipsis;" />
+            <ui:Button text="Ok" name="OkButton" style="margin-left: 16px; margin-right: 16px; margin-bottom: 16px; margin-top: 0;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="LoginMenu" style="flex-grow: 0; position: absolute; top: 33%; left: 33%; right: 33%; bottom: auto; visibility: hidden; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+        <ui:VisualElement name="LoginBackground" style="flex-grow: 1; background-color: rgb(2, 127, 226); border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; width: 100%;">
+            <ui:TextField label="Email" name="Email" style="margin-right: 16px; margin-left: 16px; margin-top: 16px;" />
+            <ui:TextField label="Password" password="true" name="Password" style="margin-left: 16px; margin-right: 16px;" />
+            <ui:Button text="Login" name="LoginButton" tooltip="If you have an account this will log you in , otherwise it will create an account for you and then login you in." style="margin-left: 16px; margin-right: 16px; margin-bottom: 8px; margin-top: 16px;" />
+            <ui:Button text="Cancel" name="CancelLoginButton" style="margin-left: 16px; margin-right: 16px; margin-bottom: 16px; margin-top: 0;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

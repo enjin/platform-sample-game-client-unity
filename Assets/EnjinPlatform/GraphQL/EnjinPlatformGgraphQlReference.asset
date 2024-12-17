@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ccf793b7ca1cc645b9cd36d753b8e3c, type: 3}
+  m_Name: EnjinPlatformGgraphQlReference
+  m_EditorClassIdentifier: 
+  url: http://sample-game.local/graphql
+  queries:
+  - name: GetUser
+    type: 0
+    query: 
+    queryString: GetUser
+    returnType: User
+    queryOptions:
+    - GetManagedWalletAccount
+    - GetUser
+    - Login
+    fields: []
+    isComplete: 0
+  - name: GetManagedWalletAccount
+    type: 0
+    query: "query GetManagedWalletAccount{\n    GetManagedWalletAccount\n}"
+    queryString: GetManagedWalletAccount
+    returnType: String
+    queryOptions:
+    - GetManagedWalletAccount
+    - GetUser
+    - Login
+    fields: []
+    isComplete: 1
+  mutations:
+  - name: RegisterAndLoginUser
+    type: 1
+    query: "mutation RegisterAndLoginUser{\n    RegisterAndLoginUser(  email :\"simon@atlasdev.io\",
+      password :\"password\" )\n}"
+    queryString: RegisterAndLoginUser
+    returnType: String
+    queryOptions:
+    - CreateManagedWalletAccount
+    - RegisterAndLoginUser
+    fields: []
+    isComplete: 1
+  - name: CreateManagedWalletAccount
+    type: 1
+    query: "mutation CreateManagedWalletAccount{\n    CreateManagedWalletAccount\n}"
+    queryString: CreateManagedWalletAccount
+    returnType: Boolean
+    queryOptions:
+    - CreateManagedWalletAccount
+    - RegisterAndLoginUser
+    fields: []
+    isComplete: 1
+  subscriptions: []
+  loading: 0
