@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using EnjinPlatform.Controllers;
+using EnjinPlatform.Managers;
 using GraphQlClient.Core;
 using HappyHarvest;
 using UnityEngine;
@@ -10,18 +10,18 @@ namespace EnjinPlatform.Services
     public class EnjinPlatformService
     {
         private static EnjinPlatformService _instance;
-        private static readonly object _lock = new object();
+        private static readonly object Lock = new object();
 
-        private static GraphApi m_GraphApi;
-        private string m_AuthToken = null;
+        private static GraphApi _mGraphApi;
+        private string _mAuthToken = null;
         public string AuthToken
         {
-            get { return m_AuthToken; }
-            set { m_AuthToken = value; }
+            get => _mAuthToken;
+            set => _mAuthToken = value;
         }
         
         public User Player { get; private set; }
-        public string ManagedWalletAccount { get; private set; }
+        public WalletAccount ManagedWalletAccount { get; private set; }
         
         public event System.Action<bool> OnLoginSuccess;
 
@@ -32,12 +32,12 @@ namespace EnjinPlatform.Services
         {
             get
             {
-                lock (_lock)
+                lock (Lock)
                 {
                     if (_instance == null)
                     {
                         _instance = new EnjinPlatformService();
-                        m_GraphApi = GameManager.Instance.GetComponent<EnjinPlatformManager>().mGraphApiReference;
+                        _mGraphApi = GameManager.Instance.GetComponent<EnjinPlatformManager>().mGraphApiReference;
                     }
                     return _instance;
                 }
@@ -48,35 +48,35 @@ namespace EnjinPlatform.Services
         {
             string pattern = @"^\d+\|[A-Za-z0-9]{48}$";
             
-            Debug.Log("auth token " + m_AuthToken);
+            Debug.Log("auth token " + _mAuthToken);
             
-            return System.Text.RegularExpressions.Regex.IsMatch(m_AuthToken, pattern);
+            return System.Text.RegularExpressions.Regex.IsMatch(_mAuthToken, pattern);
         }
         
         public async void RegisterAndLogin(string email, string password)
         {
             // Gets the needed query from the Api Reference
-            GraphApi.Query login = m_GraphApi.GetQueryByName("RegisterAndLoginUser", GraphApi.Query.Type.Mutation);
+            GraphApi.Query login = _mGraphApi.GetQueryByName("RegisterAndLoginUser", GraphApi.Query.Type.Mutation);
             
             // Sets the arguments for the query
             login.SetArgs(new {email = email, password = password});
             
-            m_GraphApi.SetAuthToken(null);
+            _mGraphApi.SetAuthToken(null);
             
             // Sends the query to the server
-            UnityWebRequest request = await m_GraphApi.Post(login);
+            UnityWebRequest request = await _mGraphApi.Post(login);
             
             string response = request.downloadHandler.text;
             DataResponse<RegisterAndLoginUserResponse> dataResponse = JsonUtility.FromJson<DataResponse<RegisterAndLoginUserResponse>>(response);
-            m_AuthToken = dataResponse.data.RegisterAndLoginUser;
+            _mAuthToken = dataResponse.data.RegisterAndLoginUser;
             
-            Debug.Log(m_AuthToken);
+            Debug.Log(_mAuthToken);
 
-            if (m_AuthToken != "unauthorized")
+            if (_mAuthToken != "unauthorized")
             {
-                m_GraphApi.SetAuthToken(m_AuthToken);
+                _mGraphApi.SetAuthToken(_mAuthToken);
             
-                PlayerPrefs.SetString("authToken", m_AuthToken);
+                PlayerPrefs.SetString("authToken", _mAuthToken);
                 PlayerPrefs.Save();
 
                 OnLoginSuccess?.Invoke(true);
@@ -89,7 +89,7 @@ namespace EnjinPlatform.Services
         
         public bool Logout()
         {
-            m_AuthToken = null;
+            _mAuthToken = null;
             PlayerPrefs.SetString("authToken", "");
             PlayerPrefs.Save();
             
@@ -111,10 +111,10 @@ namespace EnjinPlatform.Services
             }
             
             // Gets the needed query from the Api Reference
-            GraphApi.Query getPlayer = m_GraphApi.GetQueryByName("GetUser", GraphApi.Query.Type.Query);
+            GraphApi.Query getPlayer = _mGraphApi.GetQueryByName("GetUser", GraphApi.Query.Type.Query);
             
             // Sends the query to the server
-            UnityWebRequest request = await m_GraphApi.Post(getPlayer);
+            UnityWebRequest request = await _mGraphApi.Post(getPlayer);
             
             // Parses the response
             string response = request.downloadHandler.text;
@@ -134,10 +134,10 @@ namespace EnjinPlatform.Services
             }
             
             // Gets the needed query from the Api Reference
-            GraphApi.Query createManagedWalletAccount = m_GraphApi.GetQueryByName("CreateManagedWalletAccount", GraphApi.Query.Type.Mutation);
+            GraphApi.Query createManagedWalletAccount = _mGraphApi.GetQueryByName("CreateManagedWalletAccount", GraphApi.Query.Type.Mutation);
             
             // Sends the query to the server
-            UnityWebRequest request = await m_GraphApi.Post(createManagedWalletAccount);
+            UnityWebRequest request = await _mGraphApi.Post(createManagedWalletAccount);
             
             // Parses the response
             string response = request.downloadHandler.text;
@@ -156,27 +156,28 @@ namespace EnjinPlatform.Services
                 return null;
             }
             
-            if (!string.IsNullOrEmpty(ManagedWalletAccount))
+            if (ManagedWalletAccount != null)
             {
-                return ManagedWalletAccount;
+                return ManagedWalletAccount.address;
             }
             
             // Gets the needed query from the Api Reference
-            GraphApi.Query getManagedWallet = m_GraphApi.GetQueryByName("GetManagedWalletAccount", GraphApi.Query.Type.Query);
+            GraphApi.Query getManagedWallet = _mGraphApi.GetQueryByName("GetManagedWalletAccount", GraphApi.Query.Type.Query);
             
             // Sends the query to the server
-            UnityWebRequest request = await m_GraphApi.Post(getManagedWallet);
+            UnityWebRequest request = await _mGraphApi.Post(getManagedWallet);
             
             // Parses the response
             string response = request.downloadHandler.text;
+            Debug.Log(response);
             
-            DataResponse<string> dataResponse = JsonUtility.FromJson<DataResponse<string>>(response);
+            DataResponse<ManagedWalletAccountResponse> dataResponse = JsonUtility.FromJson<DataResponse<ManagedWalletAccountResponse>>(response);
             
-            ManagedWalletAccount = dataResponse.data;
+            ManagedWalletAccount = dataResponse.data.GetManagedWalletAccount;
             
-            Debug.Log("Managed Wallet Account " + ManagedWalletAccount);
+            Debug.Log("Managed Wallet Account " + ManagedWalletAccount.address);
 
-            return dataResponse.data;
+            return ManagedWalletAccount.address;
         }
         
         [System.Serializable]
@@ -192,11 +193,40 @@ namespace EnjinPlatform.Services
         }
         
         [System.Serializable]
+        public class ManagedWalletAccountResponse
+        {
+            public WalletAccount GetManagedWalletAccount;
+        }
+        
+        [System.Serializable]
         public class User
         {
             public string id;
             public string uuid;
             public string email;
+        }
+        
+        [System.Serializable]
+        public class WalletAccount
+        {
+            public string address;
+            public Token[] tokens;
+        }
+        
+        [System.Serializable]
+        public class Token
+        {
+            public string collectionId;
+            public string tokenId;
+            public string name;
+            public Attribute[] attributes;
+        }
+        
+        [System.Serializable]
+        public class Attribute
+        {
+            public string key;
+            public string value;
         }
     }
 }

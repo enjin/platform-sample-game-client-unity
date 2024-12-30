@@ -1,0 +1,280 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ccf793b7ca1cc645b9cd36d753b8e3c, type: 3}
+  m_Name: EnjinPlatformGraphQlReference
+  m_EditorClassIdentifier: 
+  url: http://sample-game.local/graphql
+  queries:
+  - name: GetUser
+    type: 0
+    query: 
+    queryString: GetUser
+    returnType: User
+    queryOptions:
+    - GetManagedWalletAccount
+    - GetUser
+    - Login
+    fields: []
+    isComplete: 0
+  - name: GetManagedWalletAccount
+    type: 0
+    query: "query GetManagedWalletAccount{\n    GetManagedWalletAccount{\n       
+      address\n        tokens{\n            token{\n                collectionId\n               
+      tokenId\n                name\n                attributes{\n                   
+      key\n                    value\n                }\n            }\n        }\n   
+      }\n}"
+    queryString: GetManagedWalletAccount
+    returnType: Wallet
+    queryOptions:
+    - GetCollection
+    - GetManagedWalletAccount
+    - GetToken
+    - GetUser
+    - Login
+    fields:
+    - index: 0
+      name: address
+      type: String
+      parentIndexes: 
+      hasSubField: 0
+      possibleFields:
+      - name: address
+        type: String
+      - name: tokens
+        type: TokenAccount
+      hasChanged: 0
+    - index: 1
+      name: tokens
+      type: TokenAccount
+      parentIndexes: 
+      hasSubField: 1
+      possibleFields:
+      - name: address
+        type: String
+      - name: tokens
+        type: TokenAccount
+      hasChanged: 0
+    - index: 1
+      name: token
+      type: Token
+      parentIndexes: 01000000
+      hasSubField: 1
+      possibleFields:
+      - name: balance
+        type: BigInt
+      - name: token
+        type: Token
+      hasChanged: 0
+    - index: 0
+      name: collectionId
+      type: BigInt
+      parentIndexes: 0100000002000000
+      hasSubField: 0
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 1
+      name: tokenId
+      type: String
+      parentIndexes: 0100000002000000
+      hasSubField: 0
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 2
+      name: name
+      type: String
+      parentIndexes: 0100000002000000
+      hasSubField: 0
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 3
+      name: attributes
+      type: Attribute
+      parentIndexes: 0100000002000000
+      hasSubField: 1
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 0
+      name: key
+      type: String
+      parentIndexes: 010000000200000006000000
+      hasSubField: 0
+      possibleFields:
+      - name: key
+        type: String
+      - name: value
+        type: String
+      hasChanged: 0
+    - index: 1
+      name: value
+      type: String
+      parentIndexes: 010000000200000006000000
+      hasSubField: 0
+      possibleFields:
+      - name: key
+        type: String
+      - name: value
+        type: String
+      hasChanged: 0
+    isComplete: 1
+  - name: GetToken
+    type: 0
+    query: "query GetToken{\n    GetToken{\n        collectionId\n        tokenId\n       
+      name\n        attributes{\n            key\n            value\n        }\n   
+      }\n}"
+    queryString: GetToken
+    returnType: Token
+    queryOptions:
+    - GetCollection
+    - GetManagedWalletAccount
+    - GetToken
+    - GetUser
+    - Login
+    fields:
+    - index: 0
+      name: collectionId
+      type: BigInt
+      parentIndexes: 
+      hasSubField: 0
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 1
+      name: tokenId
+      type: String
+      parentIndexes: 
+      hasSubField: 0
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 2
+      name: name
+      type: String
+      parentIndexes: 
+      hasSubField: 0
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 3
+      name: attributes
+      type: Attribute
+      parentIndexes: 
+      hasSubField: 1
+      possibleFields:
+      - name: collectionId
+        type: BigInt
+      - name: tokenId
+        type: String
+      - name: name
+        type: String
+      - name: attributes
+        type: Attribute
+      hasChanged: 0
+    - index: 0
+      name: key
+      type: String
+      parentIndexes: 03000000
+      hasSubField: 0
+      possibleFields:
+      - name: key
+        type: String
+      - name: value
+        type: String
+      hasChanged: 0
+    - index: 1
+      name: value
+      type: String
+      parentIndexes: 03000000
+      hasSubField: 0
+      possibleFields:
+      - name: key
+        type: String
+      - name: value
+        type: String
+      hasChanged: 0
+    isComplete: 1
+  mutations:
+  - name: RegisterAndLoginUser
+    type: 1
+    query: "mutation RegisterAndLoginUser{\n    RegisterAndLoginUser(  email :\"simon@enjin.io\",
+      password :\"password\" )\n}"
+    queryString: RegisterAndLoginUser
+    returnType: String
+    queryOptions:
+    - CreateManagedWalletAccount
+    - RegisterAndLoginUser
+    fields: []
+    isComplete: 1
+  - name: CreateManagedWalletAccount
+    type: 1
+    query: "mutation CreateManagedWalletAccount{\n    CreateManagedWalletAccount\n}"
+    queryString: CreateManagedWalletAccount
+    returnType: Boolean
+    queryOptions:
+    - CreateManagedWalletAccount
+    - RegisterAndLoginUser
+    fields: []
+    isComplete: 1
+  subscriptions: []
+  loading: 0

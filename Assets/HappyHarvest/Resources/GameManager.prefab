@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1853935594432360793}
   - component: {fileID: 1853935594432360792}
-  - component: {fileID: -6217266545341169926}
+  - component: {fileID: -6634332617912493457}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -53,7 +53,7 @@ MonoBehaviour:
   StartingTime: 46
   ItemDatabase: {fileID: 11400000, guid: 9af3a7812e32d5e4b958cde796a24cb4, type: 2}
   CropDatabase: {fileID: 11400000, guid: f182af223b74ea44e9c60decb92a78b7, type: 2}
---- !u!114 &-6217266545341169926
+--- !u!114 &-6634332617912493457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

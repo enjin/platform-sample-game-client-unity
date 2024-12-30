@@ -3,7 +3,7 @@ using GraphQlClient.Core;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace EnjinPlatform.Controllers
+namespace EnjinPlatform.Managers
 {
     public class EnjinPlatformManager : MonoBehaviour
     {
@@ -16,14 +16,21 @@ namespace EnjinPlatform.Controllers
             
             if (!string.IsNullOrEmpty(EnjinPlatformService.Instance.AuthToken))
             {
-                LoadManagedWalletAccount();
+                LoadManagedWalletAccountAsync();
             }
             
         }
         
+        async void LoadManagedWalletAccountAsync()
+        {
+            await LoadManagedWalletAccount();
+        }
+        
         async Task LoadManagedWalletAccount()
         {
-            if (string.IsNullOrEmpty(EnjinPlatformService.Instance.ManagedWalletAccount))
+            Debug.Log(EnjinPlatformService.Instance.ManagedWalletAccount);
+            
+            if (EnjinPlatformService.Instance.ManagedWalletAccount == null)
             {
                 await EnjinPlatformService.Instance.CreateManagedWalletAccount();
                 await EnjinPlatformService.Instance.GetManagedWalletAccount();
@@ -31,7 +38,7 @@ namespace EnjinPlatform.Controllers
             
             if (EnjinPlatformService.Instance.ManagedWalletAccount != null)
             {
-                Debug.Log("Managed Wallet Account loaded: " + EnjinPlatformService.Instance.ManagedWalletAccount);
+                Debug.Log("Managed Wallet Account loaded: " + EnjinPlatformService.Instance.ManagedWalletAccount.address);
             }
             else
             {

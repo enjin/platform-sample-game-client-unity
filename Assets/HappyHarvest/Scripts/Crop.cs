@@ -24,6 +24,11 @@ namespace HappyHarvest
         public int ProductPerHarvest = 1;
         public float DryDeathTimer = 30.0f;
         public VisualEffect HarvestEffect;
+        
+        [SerializeField]
+        public SerializableBigInteger BlockchainCollectionId = new SerializableBigInteger(-1);
+        [SerializeField]
+        public SerializableBigInteger BlockchainTokenId = new SerializableBigInteger(-1);
 
         public int GetGrowthStage(float growRatio)
         {

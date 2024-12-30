@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dfde727c8664bb5a1c3a80de8513fd5, type: 3}
+  m_Name: GoldCoinBlue
+  m_EditorClassIdentifier: 
+  UniqueID: gold_coin
+  DisplayName: Gold Coin
+  ItemSprite: {fileID: 21300000, guid: e62e85a2605f5044aa05771c6aa3a53b, type: 3}
+  MaxStackSize: -1
+  Consumable: 0
+  BuyPrice: -1
+  VisualPrefab: {fileID: 7188384885649982180, guid: e5c1c3a9d38a7463ca139f29d7b965af, type: 3}
+  PlayerAnimatorTriggerUse: GenericToolSwing
+  UseSound: []
+  BlockchainCollectionId:
+    value: 62595
+  BlockchainTokenId:
+    value: '1908043542188631484782 '
