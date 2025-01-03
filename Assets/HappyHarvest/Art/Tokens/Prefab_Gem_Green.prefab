@@ -204,8 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393cfdcbec8194cf98417f5cc4ce750d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: eb587d79da2464befb54f7692f879c80, type: 2}
-  rarity: 0
+  item: {fileID: 11400000, guid: 9ec09ab7b741240c08eff5bd5e579159, type: 2}
+  rarity: 0.9
 --- !u!1001 &5730749286817118816
 PrefabInstance:
   m_ObjectHideFlags: 0

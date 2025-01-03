@@ -1,9 +1,11 @@
 using System.Threading.Tasks;
+using EnjinPlatform.Data;
 using EnjinPlatform.Managers;
 using GraphQlClient.Core;
 using HappyHarvest;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 
 namespace EnjinPlatform.Services
 {
@@ -180,6 +182,34 @@ namespace EnjinPlatform.Services
             return ManagedWalletAccount.address;
         }
         
+        public Task<bool> LogGameEvent(GameEventType eventType, string eventData)
+        {
+            if (!IsLoggedIn())
+            {
+                Debug.Log("User not logged in.");
+                
+                return null;
+            }
+            
+            GraphApi.Query logGameEvent = _mGraphApi.GetQueryByName("LogGameEvent", GraphApi.Query.Type.Mutation);
+            
+            logGameEvent.SetArgs(new
+            {
+                eventType = eventType,
+                data = eventData,
+                signature = ManagedWalletAccount.signature.payload,
+                timestamp = ManagedWalletAccount.signature.timestamp
+            });
+            
+            return _mGraphApi.Post(logGameEvent).ContinueWith(task =>
+            {
+                string response = task.Result.downloadHandler.text;
+                DataResponse<bool> dataResponse = JsonUtility.FromJson<DataResponse<bool>>(response);
+                
+                return dataResponse.data;
+            });
+        }
+        
         [System.Serializable]
         public class DataResponse<T>
         {
@@ -211,6 +241,7 @@ namespace EnjinPlatform.Services
         {
             public string address;
             public Token[] tokens;
+            public WalletSignature signature;
         }
         
         [System.Serializable]
@@ -227,6 +258,13 @@ namespace EnjinPlatform.Services
         {
             public string key;
             public string value;
+        }
+
+        [System.Serializable]
+        public class WalletSignature
+        {
+            public string payload;
+            public int timestamp;
         }
     }
 }
