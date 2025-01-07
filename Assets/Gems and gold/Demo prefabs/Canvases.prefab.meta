@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 71bef8602d160b84c95d83e4d2c7087f
+timeCreated: 1584097654
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 163473
+  packageName: Coins, Crystals, Diamonds vector icons for IAP
+  packageVersion: 1.2
+  assetPath: Assets/Gems and gold/Demo prefabs/Canvases.prefab
+  uploadId: 405612

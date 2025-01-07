@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d2a8ef6bdddadad4297682d582393bc8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 259218
+  packageName: Happy Harvest - 2D Sample Project
+  packageVersion: 1.6
+  assetPath: Assets/HappyHarvest/Samples/Visual Effect Graph/14.0.7/OutputEvent Helpers/Runtime/VFXOutputEventPrefabAttributeLightHandler.cs
+  uploadId: 700773

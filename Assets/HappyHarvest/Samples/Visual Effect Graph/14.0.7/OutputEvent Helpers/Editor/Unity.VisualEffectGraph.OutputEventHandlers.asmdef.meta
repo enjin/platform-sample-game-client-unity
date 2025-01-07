@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 842eb5195e51a0c428e6bbcadca4eff5
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 259218
+  packageName: Happy Harvest - 2D Sample Project
+  packageVersion: 1.6
+  assetPath: Assets/HappyHarvest/Samples/Visual Effect Graph/14.0.7/OutputEvent Helpers/Editor/Unity.VisualEffectGraph.OutputEventHandlers.asmdef
+  uploadId: 700773

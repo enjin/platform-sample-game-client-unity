@@ -27,10 +27,6 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
-*.pidb.meta
-
-# Unity3D generated meta files
-*.pidb.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
@@ -52,7 +48,6 @@ crashlytics-build.properties
 *.lock
 *.log
 *.log.*
-*.meta
 *.tmp
 *.temp
 *.DS_Store
