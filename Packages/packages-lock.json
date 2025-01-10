@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.pusher.pusherwebsocketunity": {
+      "version": "https://github.com/pusher/pusher-websocket-unity.git#2.3.0-beta+230104",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "2c328494766724442d59d8c8455b0d35f1b7ff66"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.3",
       "depth": 1,

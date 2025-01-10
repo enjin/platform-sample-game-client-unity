@@ -125,11 +125,11 @@ MonoBehaviour:
   - name: GetManagedWalletAccount
     type: 0
     query: "query GetManagedWalletAccount{\n    GetManagedWalletAccount{\n       
-      address\n        tokens{\n            balance\n            token{\n               
-      collectionId\n                tokenId\n                name\n               
-      attributes{\n                    key\n                    value\n               
-      }\n            }\n        }\n        signature{\n            payload\n           
-      timestamp\n        }\n    }\n}"
+      address\n        publicKey\n        tokens{\n            balance\n           
+      token{\n                collectionId\n                tokenId\n               
+      name\n                attributes{\n                    key\n                   
+      value\n                }\n            }\n        }\n        signature{\n           
+      payload\n            timestamp\n        }\n    }\n}"
     queryString: GetManagedWalletAccount
     returnType: Wallet
     queryOptions:
@@ -308,8 +308,8 @@ MonoBehaviour:
   mutations:
   - name: RegisterAndLoginUser
     type: 1
-    query: "mutation RegisterAndLoginUser{\n    RegisterAndLoginUser(  email :\"simon@enjin.io\",
-      password :\"password\" )\n}"
+    query: "mutation RegisterAndLoginUser{\n    RegisterAndLoginUser(  email :\"\",
+      password :\"\" )\n}"
     queryString: RegisterAndLoginUser
     returnType: String
     queryOptions:
@@ -329,7 +329,10 @@ MonoBehaviour:
     isComplete: 1
   - name: LogGameEvent
     type: 1
-    query: 
+    query: "mutation LogGameEvent{\n    LogGameEvent(  eventType :ITEM_COLLECTED,
+      data :\"\",
+      signature :\"\",
+      timestamp : 0 )\n}"
     queryString: LogGameEvent
     returnType: Boolean
     queryOptions:
@@ -337,6 +340,6 @@ MonoBehaviour:
     - LogGameEvent
     - RegisterAndLoginUser
     fields: []
-    isComplete: 0
+    isComplete: 1
   subscriptions: []
   loading: 0

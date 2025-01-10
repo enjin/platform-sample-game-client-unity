@@ -51,8 +51,15 @@ namespace EnjinPlatform.Services
             string pattern = @"^\d+\|[A-Za-z0-9]{48}$";
             
             Debug.Log("auth token " + _mAuthToken);
+
+            var loggedIn = System.Text.RegularExpressions.Regex.IsMatch(_mAuthToken, pattern);
             
-            return System.Text.RegularExpressions.Regex.IsMatch(_mAuthToken, pattern);
+            if(loggedIn)
+            {
+                _mGraphApi.SetAuthToken(_mAuthToken);
+            }
+
+            return loggedIn;
         }
         
         public async void RegisterAndLogin(string email, string password)
@@ -240,6 +247,7 @@ namespace EnjinPlatform.Services
         public class WalletAccount
         {
             public string address;
+            public string publicKey;
             public Token[] tokens;
             public WalletSignature signature;
         }

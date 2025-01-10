@@ -38,7 +38,9 @@ namespace EnjinPlatform.Managers
             
             if (EnjinPlatformService.Instance.ManagedWalletAccount != null)
             {
-                Debug.Log("Managed Wallet Account loaded: " + EnjinPlatformService.Instance.ManagedWalletAccount.address);
+                Debug.Log("Managed Wallet Account loaded: " + EnjinPlatformService.Instance.ManagedWalletAccount.publicKey);
+                
+                await EnjinWebsocketManager.instance.SubscribeToWalletAccountChannel(EnjinPlatformService.Instance.ManagedWalletAccount.publicKey);
             }
             else
             {
