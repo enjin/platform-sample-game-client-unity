@@ -33,7 +33,8 @@ namespace EnjinPlatform.Managers
             foreach (var type in listenerTypes)
             {
                 var listener = (PusherEventListener)Activator.CreateInstance(type);
-                _listeners.Add(type.Name.Replace("Listener", ""), listener);
+                var eventName = "platform:" + string.Concat(type.Name.Replace("Listener", "").Select((x, i) => i > 0 && char.IsUpper(x) ? "-" + x : x.ToString())).ToLower();
+                instance._listeners.Add(eventName, listener);
             }
         }
 
@@ -41,6 +42,7 @@ namespace EnjinPlatform.Managers
         {
             foreach (var listener in _listeners)
             {
+                Debug.Log("Bind: " + listener.Key);
                 _channel.Bind(listener.Key, listener.Value.OnEvent);
             }
         }
@@ -67,6 +69,8 @@ namespace EnjinPlatform.Managers
 
             if (_pusher == null && (appKey != ""))
             {
+                RegisterListeners();
+                
                 _pusher = new Pusher(appKey, new PusherOptions()
                 {
                     Host = host,
@@ -92,6 +96,7 @@ namespace EnjinPlatform.Managers
         {
             _channelName = channelName;
             _channel = await _pusher.SubscribeAsync(channelName);
+            BindListeners();
         }
 
         private void PusherOnConnected(object sender)
@@ -113,8 +118,6 @@ namespace EnjinPlatform.Managers
         private void OnChannelOnSubscribed(object s, Channel channel)
         {
             Debug.Log("Websocket Channel Subscribed");
-            RegisterListeners();
-            BindListeners();
         }
 
         async Task OnApplicationQuit()
