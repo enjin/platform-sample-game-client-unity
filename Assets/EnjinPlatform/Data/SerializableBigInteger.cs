@@ -19,7 +19,20 @@ public class SerializableBigInteger
     {
         Value = value;
     }
+    
+    public SerializableBigInteger(int value)
+    {
+        Value = new BigInteger(value);
+    }
+    
+    public SerializableBigInteger(string value)
+    {
+        Value = BigInteger.Parse(value);
+    }
 
     public static implicit operator BigInteger(SerializableBigInteger sbi) => sbi.Value;
+    public static implicit operator string(SerializableBigInteger sbi) => sbi.value;
     public static implicit operator SerializableBigInteger(BigInteger bi) => new SerializableBigInteger(bi);
+    public static implicit operator SerializableBigInteger(int i) => new SerializableBigInteger(i);
+    public static implicit operator SerializableBigInteger(string s) => new SerializableBigInteger(s);
 }
