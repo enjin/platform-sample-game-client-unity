@@ -5,7 +5,6 @@ using GraphQlClient.Core;
 using HappyHarvest;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Serialization;
 
 namespace EnjinPlatform.Services
 {
@@ -194,6 +193,13 @@ namespace EnjinPlatform.Services
             if (!IsLoggedIn())
             {
                 Debug.Log("User not logged in.");
+                
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(eventData))
+            {
+                Debug.Log("Event data is empty.");
                 
                 return null;
             }

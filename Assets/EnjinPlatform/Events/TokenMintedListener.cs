@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using UnityEngine;
 
@@ -8,6 +7,9 @@ namespace EnjinPlatform.Events
 {
     public class TokenMintedListener : PusherEventListener
     {
+        public delegate void TokenMintedHandler(TokenMintedData tokenMintedData);
+        public event TokenMintedHandler OnTokenMinted;
+        
         public override void OnEvent(string data)
         {
             Debug.Log("TokenMinted received: "  + data);
@@ -21,6 +23,8 @@ namespace EnjinPlatform.Events
                 .ToArray();
             Debug.Log("Token Name: " + Encoding.ASCII.GetString(bytes) + " (" + tokenMintedData.GetTokenId().Value + ")");
             Debug.Log("Amount: " + tokenMintedData.amount);
+            
+            OnTokenMinted?.Invoke(tokenMintedData);
         }
         
         [Serializable]

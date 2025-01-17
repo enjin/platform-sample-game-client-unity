@@ -1,6 +1,5 @@
-using System.Buffers.Text;
-using System.Numerics;
 using EnjinPlatform.Data;
+using EnjinPlatform.Events;
 using EnjinPlatform.Interfaces;
 using EnjinPlatform.Services;
 using HappyHarvest;
@@ -28,7 +27,6 @@ public class EnjinBlockchainToken : InteractiveObject, IEnjinBlockchainToken
         Debug.Log(item.BlockchainCollectionId);
         Debug.Log(item.BlockchainTokenId);
         
-        // Encode the item collection id, token id into a base 64 string.
         ItemCollectedEventData data = new ItemCollectedEventData
         {
             collectionId = item.BlockchainCollectionId.Value.ToString(),
@@ -36,13 +34,9 @@ public class EnjinBlockchainToken : InteractiveObject, IEnjinBlockchainToken
             amount = 1
         };
         
-        string jsonString = JsonUtility.ToJson(data);
-        byte[] dataBytes = System.Text.Encoding.UTF8.GetBytes(jsonString);
-        string base64EventData = System.Convert.ToBase64String(dataBytes);
+        Debug.Log(data.GetEncodedData());
         
-        Debug.Log(base64EventData);
-        
-        EnjinPlatformService.Instance.LogGameEvent(GameEventType.ITEM_COLLECTED, base64EventData);
+        EnjinPlatformService.Instance.LogGameEvent(GameEventType.ITEM_COLLECTED, data.GetEncodedData());
         
         Destroy(gameObject);
     }
@@ -53,10 +47,25 @@ public class EnjinBlockchainToken : InteractiveObject, IEnjinBlockchainToken
     }
 
     [System.Serializable]
-    public class ItemCollectedEventData
+    public class ItemCollectedEventData: ItemEventData
+    {
+        public int amount;
+    }
+    
+    [System.Serializable]
+    public class ItemDestroyedEventData: ItemCollectedEventData { }
+    
+    [System.Serializable]
+    public class ItemTransferredEventData: ItemEventData
+    {
+        public int amount;
+        public string recipient;
+    }
+    
+    [System.Serializable]
+    public class ItemEventData: GameEventData
     {
         public string collectionId;
         public string tokenId;
-        public int amount;
     }
 }
