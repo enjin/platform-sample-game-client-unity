@@ -1,7 +1,8 @@
+using System.Linq;
+using EnjinPlatform.Data;
 using EnjinPlatform.Interfaces;
 using HappyHarvest;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace EnjinPlatform.Managers
@@ -54,6 +55,16 @@ namespace EnjinPlatform.Managers
             s_IsQuitting = true;
         }
 #endif
+        public EnjinBlockchainToken GetToken(SerializableBigInteger collectionId, SerializableBigInteger tokenId)
+        {
+            if (mBlockchainTokens == null || mBlockchainTokens.Length == 0)
+                return null;
+
+            // Find the token by tokenId and collectionId
+            return mBlockchainTokens.FirstOrDefault(token =>
+                token.item.BlockchainTokenId.Equals(tokenId) &&
+                token.item.BlockchainCollectionId.Equals(collectionId));
+        }
         
         public void RandomlyRevealToken(Vector3Int target)
         {

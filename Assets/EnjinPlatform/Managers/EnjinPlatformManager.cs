@@ -1,3 +1,4 @@
+using EnjinPlatform.Data;
 using EnjinPlatform.Services;
 using GraphQlClient.Core;
 using System.Threading.Tasks;
@@ -39,6 +40,19 @@ namespace EnjinPlatform.Managers
             if (EnjinPlatformService.Instance.ManagedWalletAccount != null)
             {
                 Debug.Log("Managed Wallet Account loaded: " + EnjinPlatformService.Instance.ManagedWalletAccount.publicKey);
+                if (EnjinPlatformService.Instance.ManagedWalletAccount.tokens != null)
+                {
+                    foreach (var tokenAccount in EnjinPlatformService.Instance.ManagedWalletAccount.tokens)
+                    {
+                        EnjinBlockchainToken currentToken = EnjinGameManager.Instance.GetToken(tokenAccount.token.collectionId, tokenAccount.token.tokenId);
+                        if(currentToken != null)
+                            Debug.Log($"Token: {currentToken.item.DisplayName} ({currentToken.item.BlockchainCollectionId}), Balance: {tokenAccount.balance}");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No tokens found in the managed wallet account.");
+                }
                 
                 await EnjinWebsocketManager.instance.SubscribeToWalletAccountChannel(EnjinPlatformService.Instance.ManagedWalletAccount.publicKey);
             }

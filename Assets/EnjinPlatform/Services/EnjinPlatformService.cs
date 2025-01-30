@@ -155,7 +155,7 @@ namespace EnjinPlatform.Services
             return dataResponse.data;
         }
         
-        public async Task<string> GetManagedWalletAccount()
+        public async Task<string> GetManagedWalletAccount(bool reload = false)
         {
             if (!IsLoggedIn())
             {
@@ -164,7 +164,7 @@ namespace EnjinPlatform.Services
                 return null;
             }
             
-            if (ManagedWalletAccount != null)
+            if (ManagedWalletAccount != null && !reload)
             {
                 return ManagedWalletAccount.address;
             }
@@ -254,8 +254,15 @@ namespace EnjinPlatform.Services
         {
             public string address;
             public string publicKey;
-            public Token[] tokens;
+            public TokenAccount[] tokens;
             public WalletSignature signature;
+        }
+
+        [System.Serializable]
+        public class TokenAccount
+        {
+            public string balance;
+            public Token token;
         }
         
         [System.Serializable]

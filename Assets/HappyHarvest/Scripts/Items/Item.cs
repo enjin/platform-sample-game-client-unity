@@ -22,11 +22,6 @@ namespace HappyHarvest
         
         [Tooltip("Sound triggered when using the item")]
         public AudioClip[] UseSound;
-
-        [SerializeField]
-        public SerializableBigInteger BlockchainCollectionId = new SerializableBigInteger(-1);
-        [SerializeField]
-        public SerializableBigInteger BlockchainTokenId = new SerializableBigInteger(-1);
         
         public abstract bool CanUse(Vector3Int target);
         public abstract bool Use(Vector3Int target);

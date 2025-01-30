@@ -213,6 +213,7 @@ namespace Template2DCommon
 
         void Open()
         {
+            Debug.Log("Open Setting Menu");
             m_MainVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Sound.MainVolume);
             m_BGMVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Sound.BGMVolume);
             m_SFXVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Sound.SFXVolume);

@@ -330,9 +330,9 @@ MonoBehaviour:
   - name: LogGameEvent
     type: 1
     query: "mutation LogGameEvent{\n    LogGameEvent(  eventType :ITEM_COLLECTED,
-      data :\"\",
-      signature :\"\",
-      timestamp : 0 )\n}"
+      data :\"eyJjb2xsZWN0aW9uSWQiOiI2MjU5NSIsInRva2VuSWQiOiIxOTA4MDQzNTQyMTg4NjMxNDg0NzgyIiwiYW1vdW50IjoxfQ==\",
+      signature :\"0b273c7b2d2b96d8d1c1d15b8aa8891fd89e7215bccad747cda42bcb559e3662\",
+      timestamp :1736809197 )\n}"
     queryString: LogGameEvent
     returnType: Boolean
     queryOptions:

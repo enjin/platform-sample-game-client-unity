@@ -5,67 +5,44 @@ using EnjinPlatform.Services;
 using HappyHarvest;
 using UnityEngine;
 
-public class EnjinBlockchainToken : InteractiveObject, IEnjinBlockchainToken
+namespace EnjinPlatform.Data
 {
-    public EnjinBlockchainItem item;
-    [Tooltip("The rarity of the token. Higher numbers indicates the token is more rare and reduce the chance of being found.")]
-    [Range(0f, 1.0f)]
-    public float rarity;
-    
-    public float GetRarity { get => rarity; }
-    
-    public override void InteractedWith()
+    public class EnjinBlockchainToken : InteractiveObject, IEnjinBlockchainToken
     {
-        Debug.Log("Interacted with token");
-        
-        Collect();
-    }
-    
-    public void Collect()
-    {
-        Debug.Log("Collecting token");
-        Debug.Log(item.BlockchainCollectionId);
-        Debug.Log(item.BlockchainTokenId);
-        
-        ItemCollectedEventData data = new ItemCollectedEventData
+        public EnjinBlockchainItem item;
+
+        [Tooltip(
+            "The rarity of the token. Higher numbers indicates the token is more rare and reduce the chance of being found.")]
+        [Range(0f, 1.0f)]
+        public float rarity;
+
+        public float GetRarity
         {
-            collectionId = item.BlockchainCollectionId.Value.ToString(),
-            tokenId = item.BlockchainTokenId.Value.ToString(),
-            amount = 1
-        };
-        
-        Debug.Log(data.GetEncodedData());
-        
-        EnjinPlatformService.Instance.LogGameEvent(GameEventType.ITEM_COLLECTED, data.GetEncodedData());
-        
-        Destroy(gameObject);
-    }
+            get => rarity;
+        }
 
-    public Item GetItem()
-    {
-        return item;
-    }
+        public override void InteractedWith()
+        {
+            Debug.Log("Interacted with token");
 
-    [System.Serializable]
-    public class ItemCollectedEventData: ItemEventData
-    {
-        public int amount;
-    }
-    
-    [System.Serializable]
-    public class ItemDestroyedEventData: ItemCollectedEventData { }
-    
-    [System.Serializable]
-    public class ItemTransferredEventData: ItemEventData
-    {
-        public int amount;
-        public string recipient;
-    }
-    
-    [System.Serializable]
-    public class ItemEventData: GameEventData
-    {
-        public string collectionId;
-        public string tokenId;
+            item.ItemService.Collect();
+
+            Destroy(gameObject);
+        }
+
+        public Item GetItem()
+        {
+            return item;
+        }
+        
+        public void Melt(int amount)
+        {
+            item.ItemService.Melt(amount);
+        }
+
+        public void Transfer(string toAddress, int amount)
+        {
+            item.ItemService.Transfer(toAddress, amount);
+        }
     }
 }

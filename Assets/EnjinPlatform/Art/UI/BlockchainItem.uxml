@@ -1,0 +1,8 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/EnjinPlatform/Art/UI/BlockchainItem.uss?fileID=7433441132597879392&amp;guid=92805606d7e8347db8d0c350b6fb952c&amp;type=3#BlockchainItem" />
+    <engine:VisualElement name="Item" style="flex-grow: 1; white-space: normal; flex-direction: row; width: auto;">
+        <engine:IntegerField label="Integer Field" value="42" name="ItemDetails" style="width: 212px; background-size: 100% 100%;" />
+        <engine:Button text="Melt" name="MeltButton" />
+        <engine:Button text="Send" name="TransferButton" />
+    </engine:VisualElement>
+</engine:UXML>

@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6089973901919550658}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8113580159170062323}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6776404983260836628
 MonoBehaviour:
@@ -78,6 +78,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &8345787100586716791
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,6 +104,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8345787100586716791}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -110,7 +112,6 @@ Transform:
   m_Children:
   - {fileID: 1353619261438163146}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3646233350030952452
 MonoBehaviour:
@@ -128,6 +129,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 90544aa491e5e514197c2a1f559fc9f6, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &341222602696589341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,4 +147,5 @@ MonoBehaviour:
   NormalCursor: {fileID: 2800000, guid: 13e0550d806c5a048aac92f98c0f4018, type: 3}
   InteractCursor: {fileID: 2800000, guid: 87925112ffdd71c4fa7643a786f32bb6, type: 3}
   MarketEntryTemplate: {fileID: 9197481963319205126, guid: 6da260585916c644a82ccd819407a675, type: 3}
+  BackpackEntryTemplate: {fileID: 9197481963319205126, guid: 9a820211bff0d453fa1ef0697e98b66c, type: 3}
   MarketSellSound: {fileID: 0}

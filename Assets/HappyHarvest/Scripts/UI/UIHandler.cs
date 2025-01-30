@@ -30,6 +30,8 @@ namespace HappyHarvest
         [Header("UI Document")]
         public VisualTreeAsset MarketEntryTemplate;
         
+        public VisualTreeAsset BackpackEntryTemplate;
+        
         [Header("Sounds")] 
         public AudioClip MarketSellSound;
         
@@ -53,6 +55,7 @@ namespace HappyHarvest
 
         protected SettingMenu m_SettingMenu;
         protected WarehouseUI m_WarehouseUI;
+        protected BackpackUI m_BackpackUI;
 
         // Fade to black helper
         protected VisualElement m_Blocker;
@@ -103,6 +106,10 @@ namespace HappyHarvest
             m_SettingMenu.OnClose += () => { GameManager.Instance.Resume(); };
 
             m_WarehouseUI = new WarehouseUI(m_Document.rootVisualElement.Q<VisualElement>("WarehousePopup"), MarketEntryTemplate);
+
+            m_BackpackUI = new BackpackUI(m_Document.rootVisualElement, BackpackEntryTemplate);
+            m_BackpackUI.OnOpen += () => { GameManager.Instance.Pause(); };
+            m_BackpackUI.OnClose += () => { GameManager.Instance.Resume(); };
 
             m_Blocker = m_Document.rootVisualElement.Q<VisualElement>("Blocker");
             
