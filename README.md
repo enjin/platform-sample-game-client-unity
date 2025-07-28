@@ -69,7 +69,7 @@ Once the game is running:
 2.  **Move:** Use the **W, A, S, D** keys to move your character.
 3.  **Harvest:** Walk up to a crop and click on it to harvest it.
 4.  **Collect NFTs:** Keep harvesting until a resource item (like a gem or coin) appears. Click on the item to collect it. This action will mint the item as an NFT to your player's wallet.
-5.  **View Your NFTs:** Open the **Menu** and go to your **Backpack** to see your collected NFTs. From here, you can **Melt** them or **Send** them to another wallet.
+5.  **View Your NFTs:** Click on the **Backpack** button (top-right) to see your collected NFTs. From here, you can **Melt** them or **Send** them to another wallet.
 
 -----
 
