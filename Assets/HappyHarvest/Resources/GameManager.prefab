@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1853935594432360793}
   - component: {fileID: 1853935594432360792}
-  - component: {fileID: -6634332617912493457}
-  - component: {fileID: 4499617213911215660}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -54,34 +52,6 @@ MonoBehaviour:
   StartingTime: 46
   ItemDatabase: {fileID: 11400000, guid: 9af3a7812e32d5e4b958cde796a24cb4, type: 2}
   CropDatabase: {fileID: 11400000, guid: f182af223b74ea44e9c60decb92a78b7, type: 2}
---- !u!114 &-6634332617912493457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1853935594432360775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc6cc14bfac74458a28f743605269708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mGraphApiReference: {fileID: 11400000, guid: c16c9a473897c499ab0ca70f2ebface2, type: 2}
---- !u!114 &4499617213911215660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1853935594432360775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e8b4314648d40f393a19ab2cbaaa3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  appKey: events
-  host: platform.tp-enj.in
-  cacertFile: {fileID: 4900000, guid: a28ecf4211a6e42739f3db03c42639f4, type: 3}
 --- !u!1001 &7682750376023478577
 PrefabInstance:
   m_ObjectHideFlags: 0

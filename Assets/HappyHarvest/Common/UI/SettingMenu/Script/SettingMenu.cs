@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using EnjinPlatform.Managers;
 using UnityEngine;
 using UnityEngine.UIElements;
-using EnjinPlatform.Services;
+using HappyHarvest.EnjinIntegration.Core;
 
 namespace Template2DCommon
 {
@@ -20,11 +19,11 @@ namespace Template2DCommon
         private TextField m_PasswordField;
         private Button m_LoginButton;
         private Button m_CancelLoginButton;
-        
+
         private VisualElement m_MessageBox;
         private Label m_MessageLabel;
         private Button m_OkButton;
-        
+
         private Button m_OpenLoginButton;
         private Button m_CloseButton;
         private Button m_QuitButton;
@@ -37,22 +36,22 @@ namespace Template2DCommon
         private Slider m_SFXVolumeSlider;
 
         private List<Resolution> m_AvailableResolutions;
-    
+
         public SettingMenu(VisualElement root)
         {
             m_Root = root.Q<VisualElement>("SettingMenu");
             m_OpenMenu = root.Q<Button>("OpenSettingMenuButton");
-            
+
             m_Login = root.Q<VisualElement>("LoginMenu");
             m_EmailField = m_Login.Q<TextField>("Email");
             m_PasswordField = m_Login.Q<TextField>("Password");
             m_LoginButton = m_Login.Q<Button>("LoginButton");
             m_CancelLoginButton = m_Login.Q<Button>("CancelLoginButton");
-            
+
             m_MessageBox = root.Q<VisualElement>("MessageBox");
             m_MessageLabel = m_MessageBox.Q<Label>("MessageLabel");
             m_OkButton = m_MessageBox.Q<Button>("OkButton");
-            
+
             m_OpenLoginButton = m_Root.Q<Button>("OpenLoginButton");
             m_CloseButton = m_Root.Q<Button>("CloseButton");
             m_QuitButton = m_Root.Q<Button>("QuitButton");
@@ -84,11 +83,12 @@ namespace Template2DCommon
             m_Login.visible = false;
             m_MessageBox.visible = false;
 
-            Debug.Log(EnjinPlatformService.Instance.IsLoggedIn());
-            if (EnjinPlatformService.Instance.IsLoggedIn())
+            if (EnjinManager.Instance.IsLoggedIn())
             {
                 m_OpenLoginButton.text = "Logout";
             }
+
+            EnjinManager.Instance.OnLogoutComplete += HandleForceLogout;
 
             m_OpenMenu.clicked += () =>
             {
@@ -104,88 +104,70 @@ namespace Template2DCommon
 
             m_OpenLoginButton.clicked += () =>
             {
-                if (EnjinPlatformService.Instance.IsLoggedIn())
+                if (EnjinManager.Instance.IsLoggedIn())
                 {
-                    EnjinPlatformService.Instance.Logout();
-                    m_Login.visible = false;
+                    EnjinManager.Instance.Logout();
+                    m_OpenLoginButton.text = "Login";
+                    //m_Login.visible = false;
                     return;
                 }
-                
+
                 m_Login.visible = true;
                 m_Root.visible = false;
                 m_EmailField.value = "";
                 m_PasswordField.value = "";
             };
-            
+
             m_CancelLoginButton.clicked += () =>
             {
                 m_Login.visible = false;
                 m_Root.visible = true;
             };
-            
+
             m_LoginButton.clicked += () =>
             {
-                if(m_MessageBox.visible)
+                if (m_MessageBox.visible)
                     return;
-                
+
                 if (string.IsNullOrEmpty(m_EmailField.value) || string.IsNullOrEmpty(m_PasswordField.value))
                 {
                     m_MessageLabel.text = "Email or password is empty";
                     m_MessageBox.visible = true;
+                    m_MessageBox.BringToFront();
                     return;
                 }
-                
+
                 m_LoginButton.SetEnabled(false);
                 m_CancelLoginButton.SetEnabled(false);
-                
-                EnjinPlatformService.Instance.OnLoginSuccess += async success =>
-                {
-                    if (success)
-                    {
-                        await EnjinPlatformService.Instance.CreateManagedWalletAccount();
-                        await EnjinPlatformService.Instance.GetManagedWalletAccount();
-                        
-                        m_Login.visible = false;
-                        m_Root.visible = true;
-                    }
-                    else
-                    {
-                        m_MessageLabel.text = "Login failed";
-                        m_MessageBox.visible = true;
-                        m_LoginButton.SetEnabled(true);
-                        m_CancelLoginButton.SetEnabled(true);
-                    }
-                };
-                
-                EnjinPlatformService.Instance.RegisterAndLogin(m_EmailField.value, m_PasswordField.value);
+
+                EnjinManager.Instance.OnLoginComplete += HandleLoginResult;
+
+                EnjinManager.Instance.RegisterAndLogin(m_EmailField.value, m_PasswordField.value);
             };
 
-            if (m_MessageBox.visible)
+            m_OkButton.clicked += () =>
             {
-                m_OkButton.clicked += () =>
-                {
-                    m_MessageLabel.text = "";
-                    m_MessageBox.visible = false;
-                };
-            }
+                m_MessageLabel.text = "";
+                m_MessageBox.visible = false;
+            };
 
             m_CloseButton.clicked += Close;
             m_QuitButton.clicked += Application.Quit;
-        
+
             //fill resolution dropdown
             m_AvailableResolutions = new List<Resolution>();
-        
+
             List<string> resEntries = new List<string>();
             foreach (var resolution in Screen.resolutions)
             {
                 //if we already have a resolution with same width & height, we skip.
-                if(m_AvailableResolutions.FindIndex(r => r.width == resolution.width && r.height == resolution.height) != -1)
+                if (m_AvailableResolutions.FindIndex(r => r.width == resolution.width && r.height == resolution.height) != -1)
                     continue;
-            
-                var resName = resolution.width+"x"+resolution.height;
+
+                var resName = resolution.width + "x" + resolution.height;
                 resEntries.Add(resName);
                 m_AvailableResolutions.Add(resolution);
-            
+
             }
 
             m_ResolutionDropdown.choices = resEntries;
@@ -194,7 +176,7 @@ namespace Template2DCommon
             {
                 if (m_ResolutionDropdown.index == -1)
                     return;
-            
+
                 var res = m_AvailableResolutions[m_ResolutionDropdown.index];
                 Screen.SetResolution(res.width, res.height, m_FullscreenToggle.value);
             });
@@ -217,15 +199,15 @@ namespace Template2DCommon
             m_MainVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Sound.MainVolume);
             m_BGMVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Sound.BGMVolume);
             m_SFXVolumeSlider.SetValueWithoutNotify(SoundManager.Instance.Sound.SFXVolume);
-        
+
             string currentRes = Screen.width + "x" + Screen.height;
             m_ResolutionDropdown.label = currentRes;
             m_ResolutionDropdown.SetValueWithoutNotify(currentRes);
-        
+
             m_Login.visible = false;
             m_MessageBox.visible = false;
             m_Root.visible = true;
-            OnOpen.Invoke();   
+            OnOpen.Invoke();
         }
 
         void Close()
@@ -238,6 +220,33 @@ namespace Template2DCommon
             m_LoginButton.SetEnabled(true);
             m_CancelLoginButton.SetEnabled(true);
             OnClose.Invoke();
+        }
+
+        private void HandleLoginResult(bool success)
+        {
+            // Unsubscribe immediately to ensure this only runs once per attempt
+            EnjinManager.Instance.OnLoginComplete -= HandleLoginResult;
+
+            if (success)
+            {
+                m_Login.visible = false;
+                m_Root.visible = true;
+                m_OpenLoginButton.text = "Logout";
+            }
+            else
+            {
+                m_MessageLabel.text = "Login failed";
+                m_MessageBox.visible = true;
+                m_MessageBox.BringToFront();
+            }
+
+            m_LoginButton.SetEnabled(true);
+            m_CancelLoginButton.SetEnabled(true);
+        }
+
+        private void HandleForceLogout(bool success)
+        {
+            m_OpenLoginButton.text = "Login";
         }
     }
 }

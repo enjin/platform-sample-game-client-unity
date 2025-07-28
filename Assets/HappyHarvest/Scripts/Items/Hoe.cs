@@ -1,5 +1,5 @@
-using EnjinPlatform.Managers;
 using UnityEngine;
+using HappyHarvest.EnjinIntegration.Core;
 
 namespace HappyHarvest
 {
@@ -14,9 +14,8 @@ namespace HappyHarvest
         public override bool Use(Vector3Int target)
         {
             GameManager.Instance.Terrain.TillAt(target);
-            
-            // TODO: Blockchain here. Random reward item drop.
-            EnjinGameManager.Instance.RandomlyRevealToken(target);
+
+            EnjinManager.Instance.RandomlyRevealToken(target);
             
             return true;
         }
