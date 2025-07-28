@@ -58,7 +58,10 @@ git clone https://github.com/enjin/platform-sample-game-client-unity.git
 
 ### **Step 5: Run the Game & How to Play 🎮**
 
-Make sure the game server is still running in the background. Press the **Play** button at the top of the Unity Editor to start the game.
+Make sure the game server is still running in the background.
+1.  In the Unity Editor's `Project` window, navigate to `Assets/HappyHarvest/Scenes`.
+2.	Double click on the `Farm_Outdoor` scene.
+3.	Press the **Play** button at the top of the Unity Editor to start the game.
 
 Once the game is running:
 
