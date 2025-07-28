@@ -1,15 +1,78 @@
-# Game Client Quickstart
+# Introduction
 
-The sample game uses Unity 6.  Once installed pull the repo from GitHub and then load it up through Unity Hub.  After the assets are built it's time to configure the connections to the game server as well as the platform websocket server.
+This repository contains the Unity client for the Enjin Platform sample game. It's a simple farming game designed to demonstrate how to integrate Enjin's NFT technology into a Unity project. 🧑‍🌾
 
-Find the `Assets/EnjinPlatform/GraphQL/EnjinPlatformGraphQlReference` scriptable object in the project window and click it to open its properties in the inspector.  Change the Url field to the URL of your game server the click `Introspect`.  It should connect to your game server and pull the GraphQL schema data.
+This client communicates with a [Node.js game server](https://github.com/enjin/platform-sample-game-server) to handle all blockchain-related actions like minting, melting, reading players' wallets, and transferring NFTs.
 
-Next find the `Assets/HappyHarvest/Resources/GameManager` prefab and click it to open it in the inspector.  In the inspector you will see the `EnjinWebsocketManager` script has been added to it.  This is where you can set which platform server to connect to for websocket events.  Make sure the platform you connect to is the same one which your game server also connects to.  The `App Key` should be the key supplied by the websocket sever to identify the app it's running, for self-hosted platforms this will be the key you set in your config, for the Cloud hosted platform this can be found in the [docs](https://docs.enjin.io/docs/websocket-events).
+-----
 
-After the above config is complete you should be able to load the `Farm_Outdoor` scene into the editor window and hit play.  From here we now need to 'login' to the game server and retrieve our managed wallet.
+## Quick Start Guide
 
-With the game running click the `Menu` button in the top right.  Next press `Login` and enter your email address and a password.  If an account for your email doesn't yet exist then one will be created the first time you try to log in.  After a moment you should be logged in and a few more moments later a managed wallet should be returned to you.
+This guide will get you up and running quickly.
 
-Once you are logged in the game will store your login auth token locally so you don't need to log in in each time the game loads.  If an auth token is found then it will log in automatically right away and get your managed wallet.
+### **Prerequisites**
 
-To play the game walk around using `W/S/A/D`, find some empty land in your fields and then use the hoe tool to dig by clicking the space with the left mouse button.  There is a random chance of finding either a plain gold coin, a gold could with a gem in it, or a gemstone.  These are the items that you can collect on the blockchain.  Click the item to pick it up and this will initiate a mint on the blockchain.  After 30-60s the item will be in your managed wallet, and you will be able to see it on chain in [Subscan](https://canary-matrix.subscan.io/).  You will also be able to check your `backpack` in the top right to see your blockchain items loaded into the game.
+  - ✅ Unity Hub with Unity Editor version `6000.0.24f1`
+  - ✅ Git
+
+-----
+
+### **Step 1: Set Up the Game Server**
+
+⚠️ **Important:** Before you can run this Unity client, you **must set up and run the game server first**.
+
+Please follow the setup instructions in the [game server repository](https://github.com/enjin/platform-sample-game-server).
+
+After running the server for the first time, it will generate and log a **Collection ID** in the terminal. **Copy this ID** – you'll need it in a moment.
+
+-----
+
+### **Step 2: Clone the Client Repository**
+
+Open a terminal or command prompt and run:
+
+```bash
+git clone https://github.com/enjin/platform-sample-game-client-unity.git
+```
+
+-----
+
+### **Step 3: Open the Project in Unity**
+
+1.  Open **Unity Hub**.
+2.  Click `Add` -\> `Add project from disk`.
+3.  Select the cloned `platform-sample-game-client-unity` folder.
+4.  Open the project in the Unity Editor.
+
+-----
+
+### **Step 4: Configure the Project**
+
+1.  In the Unity Editor's `Project` window, navigate to `Assets/Enjin Integration/Scripts/Data/Items`.
+2.  You will see three `Enjin Item` assets: `GemGreen`, `GoldCoin`, and `GoldCoinBlue`.
+3.  Click on **each one** of these items. In the `Inspector` window, find the **Collection Id** field and paste the `Collection ID` you copied from the game server.
+
+> **Note:** If you are running the game server on a different machine or port, you'll also need to update the server URL. Select the `EnjinManager` prefab in `Assets/Enjin Integration/Prefabs/` and change the `Host` property in the `Enjin API Service` component.
+
+-----
+
+### **Step 5: Run the Game & How to Play 🎮**
+
+Make sure the game server is still running in the background.
+1.  In the Unity Editor's `Project` window, navigate to `Assets/HappyHarvest/Scenes`.
+2.	Double click on the `Farm_Outdoor` scene.
+3.	Press the **Play** button at the top of the Unity Editor to start the game.
+
+Once the game is running:
+
+1.  **Login:** Click the **Menu** button (top-right), then **Login**. Enter any email and password to register a new player. This will automatically create a managed wallet for you.
+2.  **Move:** Use the **W, A, S, D** keys to move your character.
+3.  **Harvest:** Walk up to a crop and click on it to harvest it.
+4.  **Collect NFTs:** Keep harvesting until a resource item (like a gem or coin) appears. Click on the item to collect it. This action will mint the item as an NFT to your player's wallet.
+5.  **View Your NFTs:** Click on the **Backpack** button (top-right) to see your collected NFTs. From here, you can **Melt** them or **Send** them to another wallet.
+
+-----
+
+## Full Documentation
+
+For a complete, step-by-step walkthrough that covers setting up the Enjin Platform, the Wallet Daemon, the game server, and this client, please refer to our **[in-depth guide](https://docs.enjin.io)**.

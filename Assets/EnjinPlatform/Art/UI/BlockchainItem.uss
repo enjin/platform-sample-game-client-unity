@@ -1,3 +1,0 @@
-VisualElement > .unity-integer-field > .unity-base-field__label--with-dragger {
-    min-width: 158px;
-}

@@ -4,6 +4,7 @@ using Template2DCommon;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
+using HappyHarvest.EnjinIntegration.UI;
 
 
 namespace HappyHarvest
@@ -134,6 +135,11 @@ namespace HappyHarvest
         void Update()
         {
             m_TimerLabel.text = GameManager.Instance.CurrentTimeAsString();
+        }
+
+        private void OnDestroy()
+        {
+            m_BackpackUI?.Dispose();
         }
 
         private void OnApplicationFocus(bool hasFocus)

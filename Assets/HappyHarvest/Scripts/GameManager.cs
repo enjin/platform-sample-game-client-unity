@@ -36,6 +36,7 @@ namespace HappyHarvest
                     //in editor, we can start any scene to test, so we are not sure the game manager will have been
                     //created by the first scene starting the game. So we load it manually. This check is useless in
                     //player build as the 1st scene will have created the GameManager so it will always exist.
+
                     Instantiate(Resources.Load<GameManager>("GameManager"));
                 }
 #endif
