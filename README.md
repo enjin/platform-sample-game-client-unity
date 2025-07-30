@@ -75,4 +75,7 @@ Once the game is running:
 
 ## Full Documentation
 
-For a complete, step-by-step walkthrough that covers setting up the Enjin Platform, the Wallet Daemon, the game server, and this client, please refer to our **[in-depth guide](https://docs.enjin.io)**.
+For more in-depth information about the Enjin Platform and its features, please refer to the official documentation:
+
+* [Setup Guide](https://docs.enjin.io/guides/platform/enjin-farmer-sample-game/setup-guide)
+* [Implementation Breakdown](https://docs.enjin.io/guides/platform/enjin-farmer-sample-game/implementation-breakdown)
