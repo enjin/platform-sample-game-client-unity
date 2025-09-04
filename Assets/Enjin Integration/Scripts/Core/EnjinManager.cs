@@ -152,6 +152,7 @@ namespace HappyHarvest.EnjinIntegration.Core {
             SaveTokenToPlayerPrefs();
             Debug.Log("Login successful. Token generated.");
             OnLoginComplete?.Invoke(true);
+            GetManagedWalletTokens();
         }
 
         /// <summary>

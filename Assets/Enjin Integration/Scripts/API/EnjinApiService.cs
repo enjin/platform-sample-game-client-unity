@@ -222,6 +222,7 @@ namespace HappyHarvest.EnjinIntegration.API
                 if (getManagedWalletTokensRequest.result == UnityWebRequest.Result.Success)
                 {
                     var ManagedWalletAccount = JsonUtility.FromJson<PlatformModels.ManagedWalletAccount>(getManagedWalletTokensRequest.downloadHandler.text);
+                    Debug.Log("Managed wallet account address:" + ManagedWalletAccount.account.address);
                     return ManagedWalletAccount;
                 }
             }
