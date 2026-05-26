@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="VFXGraph.OutputEventHandlers.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="VFXGraph.OutputEventHandlers.Editor.csproj" />
+  <Project Path="EnjinSdkSmoke.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="EnjinSdkSmoke.Editor.csproj" />
+</Solution>

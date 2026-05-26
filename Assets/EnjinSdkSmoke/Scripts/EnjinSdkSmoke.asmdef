@@ -1,0 +1,17 @@
+{
+    "name": "EnjinSdkSmoke",
+    "rootNamespace": "EnjinSdkSmoke",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Enjin.Platform.Sdk.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
