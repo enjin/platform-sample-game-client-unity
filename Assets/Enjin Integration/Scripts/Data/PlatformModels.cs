@@ -63,11 +63,20 @@ namespace HappyHarvest.EnjinIntegration.Data
             public Account account;
             public TokenAccount[] tokenAccounts;
 
+            /// <summary>
+            /// On-chain collection id (decimal string) that owns every resource
+            /// token the sample game uses. The sample server allocates or
+            /// reuses this collection at startup and reports it here, so the
+            /// client doesn't have to hardcode it in EnjinItem .asset files.
+            /// </summary>
+            public string collectionId;
+
             public override string ToString()
             {
                 var sb = new StringBuilder();
                 sb.AppendLine("---- Managed Wallet ----");
                 sb.AppendLine(account?.ToString() ?? "Account: null");
+                sb.AppendLine($"Collection ID: {collectionId}");
 
                 if (tokenAccounts != null && tokenAccounts.Length > 0)
                 {
