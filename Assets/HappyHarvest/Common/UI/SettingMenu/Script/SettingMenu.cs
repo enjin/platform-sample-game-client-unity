@@ -142,7 +142,9 @@ namespace Template2DCommon
 
                 EnjinManager.Instance.OnLoginComplete += HandleLoginResult;
 
-                EnjinManager.Instance.RegisterAndLogin(m_EmailField.value, m_PasswordField.value);
+                // Fire-and-forget: HandleLoginResult is invoked via the
+                // OnLoginComplete event when the request finishes.
+                _ = EnjinManager.Instance.RegisterAndLogin(m_EmailField.value, m_PasswordField.value);
             };
 
             m_OkButton.clicked += () =>

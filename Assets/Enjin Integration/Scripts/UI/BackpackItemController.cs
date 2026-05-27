@@ -50,7 +50,8 @@ namespace HappyHarvest.EnjinIntegration.UI
                     else
                     {
                         Debug.Log("Melt " + m_ItemDetails.value + " of " + m_TokenAccount.balance + " " + m_ItemDetails.label);
-                        m_Token.item.Melt(m_ItemDetails.value);
+                        // Fire-and-forget: UI refresh happens via OnWalletUpdated.
+                        _ = m_Token.item.Melt(m_ItemDetails.value);
                     }
                 }
             };

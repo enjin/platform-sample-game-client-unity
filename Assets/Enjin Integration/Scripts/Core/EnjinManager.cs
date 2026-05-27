@@ -38,7 +38,9 @@ namespace HappyHarvest.EnjinIntegration.Core {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
             Instance.LoadTokenFromPlayerPrefs();
-            GetManagedWalletTokens();
+            // Fire-and-forget: prime the wallet cache if we already have a
+            // saved token. Subsequent UI opens read the cached value.
+            _ = GetManagedWalletTokens();
         }
 
         async public Task GetManagedWalletTokens()
@@ -52,50 +54,40 @@ namespace HappyHarvest.EnjinIntegration.Core {
                 {
                     Debug.LogWarning("No tokens found in the managed wallet or failed to fetch.");
                     // Ensure walletAccount is initialized to avoid null reference issues.
-                    walletAccount = new PlatformModels.ManagedWalletAccount
-                    {
-                        account = allWalletTokens?.account,
-                        tokenAccounts = new PlatformModels.TokenAccount[0],
-                        collectionId = allWalletTokens?.collectionId,
-                    };
+                    walletAccount = new PlatformModels.ManagedWalletAccount { account = allWalletTokens?.account, tokenAccounts = new PlatformModels.TokenAccount[0] };
                     return;
                 }
 
-                // The server tells us which on-chain collection holds the
-                // resource tokens this sample uses (it can change across
-                // canary resets, so we trust the server over the value
-                // serialised on each EnjinItem .asset). We keep filtering
-                // by tokenId so other tokens the player may own in the
-                // same collection don't show up in the backpack.
-                string serverCollectionId = allWalletTokens.collectionId;
-                var inGameTokenIds = new HashSet<string>(
-                    mBlockchainTokens.Select(token => token.item.tokenId.ToString())
+                // Create a lookup set of in-game token identifiers for efficient filtering.
+                // We convert the SerializableBigInteger IDs to strings for comparison.
+                //
+                // The collectionId on each EnjinItem .asset must match the on-chain
+                // collection the sample server is bootstrapped against. Run the editor
+                // menu "Enjin > Stamp Collection ID onto EnjinItem Assets" once during
+                // setup to populate these from the server's /api/setup/collection-id.
+                var inGameTokenIds = new HashSet<(string, string)>(
+                    mBlockchainTokens.Select(token => (
+                        token.item.collectionId.ToString(),
+                        token.item.tokenId.ToString()
+                    ))
                 );
 
+                // Filter the token accounts from the wallet. A token account is kept only if its
+                // collectionId and tokenId match an entry in our in-game token set.
                 PlatformModels.TokenAccount[] filteredTokenAccounts = allWalletTokens.tokenAccounts.Where(walletTokenAccount =>
                 {
                     string collectionId = walletTokenAccount.token?.collection?.collectionId;
                     string tokenId = walletTokenAccount.token?.tokenId;
 
-                    // Optional collection check: if the server reported a
-                    // collection id, require an exact match. Otherwise accept
-                    // any collection (defensive: an older server build may
-                    // not surface it yet).
-                    if (!string.IsNullOrEmpty(serverCollectionId)
-                        && collectionId != serverCollectionId)
-                    {
-                        return false;
-                    }
-
-                    return inGameTokenIds.Contains(tokenId);
+                    // Check if the token from the wallet exists in our set of in-game tokens.
+                    return inGameTokenIds.Contains((collectionId, tokenId));
                 }).ToArray();
 
                 // Construct the final walletAccount object with the filtered list of tokens.
                 walletAccount = new PlatformModels.ManagedWalletAccount
                 {
                     account = allWalletTokens.account,
-                    tokenAccounts = filteredTokenAccounts,
-                    collectionId = serverCollectionId,
+                    tokenAccounts = filteredTokenAccounts
                 };
             }
         }
@@ -167,7 +159,9 @@ namespace HappyHarvest.EnjinIntegration.Core {
             SaveTokenToPlayerPrefs();
             Debug.Log("Login successful. Token generated.");
             OnLoginComplete?.Invoke(true);
-            GetManagedWalletTokens();
+            // Fire-and-forget: kick off an initial wallet fetch so the
+            // backpack has data ready the first time the player opens it.
+            _ = GetManagedWalletTokens();
         }
 
         /// <summary>
@@ -210,16 +204,18 @@ namespace HappyHarvest.EnjinIntegration.Core {
             if (mBlockchainTokens == null || mBlockchainTokens.Length == 0)
                 return null;
 
-            // We match on tokenId only. The collectionId on each EnjinItem
-            // .asset is a placeholder (-1) because the on-chain collection is
-            // allocated by the server at runtime; GetManagedWalletTokens
-            // already filtered the wallet's TokenAccounts to the server's
-            // collection, so any lookup that reaches here is in-scope.
+            // Find the token by tokenId and collectionId. Both values on the
+            // EnjinItem .asset must be populated for this lookup to succeed;
+            // run the editor menu "Enjin > Stamp Collection ID onto EnjinItem
+            // Assets" once during setup if it fails because the collectionId
+            // is still the -1 placeholder.
+            string wantedCollectionId = collectionId?.ToString();
             string wantedTokenId = tokenId?.ToString();
             return mBlockchainTokens.FirstOrDefault(token =>
                 token != null &&
                 token.item != null &&
-                token.item.tokenId.ToString() == wantedTokenId);
+                token.item.tokenId.ToString() == wantedTokenId &&
+                token.item.collectionId.ToString() == wantedCollectionId);
         }
 
         public void RandomlyRevealToken(Vector3Int target)
