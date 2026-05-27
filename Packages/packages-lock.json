@@ -386,12 +386,13 @@
       "url": "https://packages.unity.com"
     },
     "io.enjin.platform-sdk": {
-      "version": "file:../../platform-csharp-sdk/EnjinPlatformSdk-v3.0.0-upm.tar.gz",
+      "version": "https://github.com/enjin/platform-csharp-sdk.git#upm/v3.0.0",
       "depth": 0,
-      "source": "local-tarball",
+      "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
-      }
+      },
+      "hash": ""
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

@@ -12,25 +12,20 @@ new checks.
 
 ## Requirements
 
-- The SDK is referenced from `Packages/manifest.json` via a local tarball:
-
-  ```json
-  "io.enjin.platform-sdk": "file:../../platform-csharp-sdk/EnjinPlatformSdk-v3.0.0-upm.tar.gz"
-  ```
-
-  This expects the SDK repo to be checked out next to this one. Once an
-  `upm/v3.0.0` tag is published to the SDK remote, switch to the git URL:
+- The SDK is referenced from `Packages/manifest.json` via a Git URL:
 
   ```json
   "io.enjin.platform-sdk": "https://github.com/enjin/platform-csharp-sdk.git#upm/v3.0.0"
   ```
+
+  Unity will fetch and cache the package automatically on first project open.
 
 - A canary (beta) platform API token. Generate one in the platform UI under
   your account settings.
 
 ## Running it
 
-1. Open the project in Unity 6000.0.24f1 (or later). Wait for the Package
+1. Open the project in Unity 6000.3.16f1 (or later). Wait for the Package
    Manager to import `io.enjin.platform-sdk`.
 2. Menu: **Enjin ▸ Open SDK Smoke Scene**. This creates
    - `Assets/EnjinSdkSmoke/SdkSmokeConfig.asset` (gitignored — contains the
