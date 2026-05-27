@@ -16,7 +16,7 @@
     "com.unity.ugui": "2.0.0",
     "com.unity.visualeffectgraph": "17.3.0",
     "com.unity.visualscripting": "1.9.11",
-    "io.enjin.platform-sdk": "file:../../platform-csharp-sdk/EnjinPlatformSdk-v3.0.0-upm.tar.gz",
+    "io.enjin.platform-sdk": "https://github.com/enjin/platform-csharp-sdk.git#upm/v3.0.0",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
     "com.unity.modules.ai": "1.0.0",

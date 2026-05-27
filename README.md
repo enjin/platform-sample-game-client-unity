@@ -44,7 +44,13 @@ git clone https://github.com/enjin/platform-sample-game-client-unity.git
 3.  Select the cloned `platform-sample-game-client-unity` folder.
 4.  Open the project in the Unity Editor.
 
-The project depends on the Enjin Platform C# SDK delivered as a local UPM tarball (`Packages/manifest.json` points at `file:../../platform-csharp-sdk/EnjinPlatformSdk-v3.0.0-upm.tar.gz`). Make sure the SDK repo is checked out as a sibling directory of this client repo, or update the path in `manifest.json`.
+The project depends on the [Enjin Platform C# SDK](https://github.com/enjin/platform-csharp-sdk) delivered as a UPM package over git. `Packages/manifest.json` references it as:
+
+```
+"io.enjin.platform-sdk": "https://github.com/enjin/platform-csharp-sdk.git#upm/v3.0.0"
+```
+
+Unity will fetch and cache the package on first project open.
 
 -----
 
