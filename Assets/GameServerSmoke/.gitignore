@@ -1,0 +1,7 @@
+# The generated scene and config asset are user-specific (and the config
+# may hold an email/password we don't want in git). They're created on
+# demand by the Enjin > Open Game Server Smoke Scene menu.
+GameServerSmoke.unity
+GameServerSmoke.unity.meta
+GameServerSmokeConfig.asset
+GameServerSmokeConfig.asset.meta
