@@ -95,8 +95,12 @@ namespace EnjinSdkSmoke
             LogLine($"Unity:    {Application.unityVersion}  Platform: {Application.platform}  IL2CPP: {IsIl2Cpp()}");
             LogLine("");
 
-            using var client = new PlatformClient(new Uri(config.platformUrl));
-            client.Auth(config.platformToken);
+            using var client = TryCreateClient();
+            if (client == null)
+            {
+                LogLine("=== Done ===");
+                return;
+            }
 
             try
             {
@@ -118,6 +122,30 @@ namespace EnjinSdkSmoke
 
             LogLine("");
             LogLine("=== Done ===");
+        }
+
+        private PlatformClient TryCreateClient()
+        {
+            try
+            {
+                if (!Uri.TryCreate(config.platformUrl, UriKind.Absolute, out var uri))
+                {
+                    LogLine($"FATAL: platformUrl is not a valid absolute URI: '{config.platformUrl}'");
+                    return null;
+                }
+                var client = new PlatformClient(uri);
+                client.Auth(config.platformToken);
+                return client;
+            }
+            catch (Exception ex)
+            {
+                LogLine($"FATAL: {ex.GetType().Name} while constructing PlatformClient: {ex.Message}");
+                if (ex.InnerException is not null)
+                {
+                    LogLine($"  inner: {ex.InnerException.GetType().Name}: {ex.InnerException.Message}");
+                }
+                return null;
+            }
         }
 
         // ---- individual checks ------------------------------------------------

@@ -38,8 +38,16 @@ namespace HappyHarvest.EnjinIntegration.Core {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
             Instance.LoadTokenFromPlayerPrefs();
-            // Fire-and-forget: prime the wallet cache if we already have a
-            // saved token. Subsequent UI opens read the cached value.
+        }
+
+        private void Start()
+        {
+            // Defer the initial wallet fetch until Start so that
+            // EnjinApiService.Awake (which may run after ours on the same
+            // prefab depending on component order) has had a chance to
+            // populate EnjinApiService.Instance. Fire-and-forget: prime the
+            // wallet cache if we already have a saved token. Subsequent UI
+            // opens read the cached value.
             _ = GetManagedWalletTokens();
         }
 
@@ -47,6 +55,12 @@ namespace HappyHarvest.EnjinIntegration.Core {
         {
             if (IsLoggedIn())
             {
+                if (EnjinApiService.Instance == null)
+                {
+                    Debug.LogWarning("GetManagedWalletTokens called before EnjinApiService was initialized; skipping initial wallet prime.");
+                    return;
+                }
+
                 PlatformModels.ManagedWalletAccount allWalletTokens = await EnjinApiService.Instance.GetManagedWalletTokens(_authToken);
 
                 // Exit if the wallet data is null or contains no token accounts.
