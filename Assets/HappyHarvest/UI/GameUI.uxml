@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="SettingsMenu" src="project://database/Assets/HappyHarvest/Common/UI/SettingMenu/SettingsMenu.uxml?fileID=9197481963319205126&amp;guid=8d69576e4b170461a806003cdd28ea87&amp;type=3#SettingsMenu" />
-    <ui:Template name="Backpack" src="project://database/Assets/EnjinPlatform/Art/UI/Backpack.uxml?fileID=9197481963319205126&amp;guid=428b6f945edb14c078227dec7ab231b1&amp;type=3#Backpack" />
+    <ui:Template name="Backpack" src="project://database/Assets/Enjin%20Integration/Scripts/UI/Backpack.uxml?fileID=9197481963319205126&amp;guid=428b6f945edb14c078227dec7ab231b1&amp;type=3#Backpack" />
     <Style src="project://database/Assets/HappyHarvest/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=59b1a0b3477344945ae509fbe8d014a6&amp;type=3#GameUI" />
     <ui:VisualElement name="Inventory" style="background-color: rgba(0, 0, 0, 0); height: 100px; position: absolute; bottom: 0; width: 100%; flex-direction: row; align-items: center; justify-content: center;">
         <ui:VisualElement name="InventoryEntry" style="flex-grow: 0; width: 80px; height: 80px; flex-direction: row;">
@@ -56,7 +56,7 @@
         <ui:VisualElement name="WeatherBlock" class="background-block" style="background-color: rgba(0, 0, 0, 0.41);">
             <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="SunLabel" text="☀" style="-unity-text-align: middle-center; -unity-font: url(&quot;project://database/Assets/HappyHarvest/Fonts/NotoSansSymbols2/NotoSansSymbols2-Regular.ttf?fileID=12800000&amp;guid=6e05353bcf099184abee5104e4b9228a&amp;type=3#NotoSansSymbols2-Regular&quot;);" />
             <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="RainLabel" text="⛆" style="-unity-text-align: middle-center; -unity-font: url(&quot;project://database/Assets/HappyHarvest/Fonts/NotoSansSymbols2/NotoSansSymbols2-Regular.ttf?fileID=12800000&amp;guid=6e05353bcf099184abee5104e4b9228a&amp;type=3#NotoSansSymbols2-Regular&quot;);" />
-            <ui:Label tabindex="-1" text="\u26C8" display-tooltip-when-elided="true" name="ThunderLabel" style="-unity-text-align: middle-center;" />
+            <ui:Label tabindex="-1" text="⛈" display-tooltip-when-elided="true" name="ThunderLabel" style="-unity-text-align: middle-center; -unity-font: url(&quot;project://database/Assets/HappyHarvest/Fonts/NotoSansSymbols2/NotoSansSymbols2-Regular.ttf?fileID=12800000&amp;guid=6e05353bcf099184abee5104e4b9228a&amp;type=3#NotoSansSymbols2-Regular&quot;);" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="MarketPopup" class="game-popup" style="visibility: hidden;">
