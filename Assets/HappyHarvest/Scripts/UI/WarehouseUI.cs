@@ -37,6 +37,14 @@ namespace HappyHarvest
             m_Scrollview = m_Root.Q<ScrollView>("ContentScrollView");
         }
 
+        // Whether the warehouse popup is currently shown. Used by UIHandler to
+        // drive the shared Escape / click-outside dismissal.
+        public bool IsOpen => m_Root.visible;
+
+        // The visible content panel (not the full-screen backdrop), used for
+        // click-outside hit-testing.
+        public VisualElement Panel => m_Root.Q<VisualElement>("PopupBackground");
+
         public void Open()
         {
             m_Root.visible = true;

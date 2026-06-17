@@ -116,6 +116,10 @@ namespace HappyHarvest.EnjinIntegration.Core {
                     OnWalletUpdated?.Invoke();
                 }
             }
+            else
+            {
+                Debug.LogWarning($"Mint of token #{tokenId} skipped: not logged in. Open the Settings menu and log in first.");
+            }
         }
 
         async public Task MeltToken(string tokenId, int amount)
@@ -128,6 +132,10 @@ namespace HappyHarvest.EnjinIntegration.Core {
                     OnWalletUpdated?.Invoke();
                 }
             }
+            else
+            {
+                Debug.LogWarning($"Melt of token #{tokenId} skipped: not logged in. Open the Settings menu and log in first.");
+            }
         }
 
         async public Task TransferToken(string tokenId, int amount, string recipient)
@@ -139,6 +147,10 @@ namespace HappyHarvest.EnjinIntegration.Core {
                 {
                     OnWalletUpdated?.Invoke();
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"Transfer of token #{tokenId} skipped: not logged in. Open the Settings menu and log in first.");
             }
         }
 

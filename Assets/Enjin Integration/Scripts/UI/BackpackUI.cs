@@ -54,7 +54,15 @@ namespace HappyHarvest.EnjinIntegration.UI
             OnOpen?.Invoke();
         }
 
-        private void Close()
+        // Whether the backpack is currently shown. Used by UIHandler to drive
+        // the shared Escape / click-outside dismissal.
+        public bool IsOpen => m_Root.visible;
+
+        // The visible panel, used for click-outside hit-testing. The backpack
+        // has no full-screen backdrop, so this is the panel element itself.
+        public VisualElement Panel => m_Root;
+
+        public void Close()
         {
             m_ItemList.visible = false;
             m_Root.visible = false;

@@ -12,6 +12,7 @@ namespace Template2DCommon
         public System.Action OnOpen;
 
         private VisualElement m_Root;
+        private VisualElement m_Background;
         private Button m_OpenMenu;
 
         private VisualElement m_Login;
@@ -40,6 +41,7 @@ namespace Template2DCommon
         public SettingMenu(VisualElement root)
         {
             m_Root = root.Q<VisualElement>("SettingMenu");
+            m_Background = m_Root.Q<VisualElement>("Background");
             m_OpenMenu = root.Q<Button>("OpenSettingMenuButton");
 
             m_Login = root.Q<VisualElement>("LoginMenu");
@@ -212,7 +214,16 @@ namespace Template2DCommon
             OnOpen.Invoke();
         }
 
-        void Close()
+        // Whether the settings panel is currently shown. Used by UIHandler to
+        // drive the shared Escape / click-outside dismissal. Note this reflects
+        // the main panel; the Login/MessageBox sub-panels are separate.
+        public bool IsOpen => m_Root.visible;
+
+        // The visible content panel (not the full-screen dim backdrop), used
+        // for click-outside hit-testing.
+        public VisualElement Panel => m_Background;
+
+        public void Close()
         {
             SoundManager.Instance.PlayUISound();
             SoundManager.Instance.Save();

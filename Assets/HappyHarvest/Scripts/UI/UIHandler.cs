@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Template2DCommon;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 using HappyHarvest.EnjinIntegration.UI;
@@ -58,6 +59,12 @@ namespace HappyHarvest
         protected WarehouseUI m_WarehouseUI;
         protected BackpackUI m_BackpackUI;
 
+        // Menus that can be dismissed with Escape or a click outside their
+        // panel. Order is priority: the first open one is the one Escape /
+        // an outside-click closes.
+        private readonly List<(Func<bool> IsOpen, Func<VisualElement> Panel, Action Close)> m_DismissableMenus =
+            new List<(Func<bool>, Func<VisualElement>, Action)>();
+
         // Fade to black helper
         protected VisualElement m_Blocker;
         protected System.Action m_FadeFinishClbk;
@@ -112,6 +119,17 @@ namespace HappyHarvest
             m_BackpackUI.OnOpen += () => { GameManager.Instance.Pause(); };
             m_BackpackUI.OnClose += () => { GameManager.Instance.Resume(); };
 
+            // Register the open menus for shared Escape / click-outside dismissal.
+            m_DismissableMenus.Add((() => m_SettingMenu.IsOpen, () => m_SettingMenu.Panel, () => m_SettingMenu.Close()));
+            m_DismissableMenus.Add((() => m_BackpackUI.IsOpen, () => m_BackpackUI.Panel, () => m_BackpackUI.Close()));
+            m_DismissableMenus.Add((() => m_WarehouseUI.IsOpen, () => m_WarehouseUI.Panel, () => m_WarehouseUI.Close()));
+            m_DismissableMenus.Add((() => m_MarketPopup.visible, () => m_MarketPopup.Q<VisualElement>("PopupBackground"), () => CloseMarket()));
+
+            // Capture-phase so we see the click before the target handles it; we
+            // only close when the press lands outside the open menu's panel, so
+            // controls inside the menu keep working.
+            m_Document.rootVisualElement.RegisterCallback<PointerDownEvent>(OnDismissPointerDown, TrickleDown.TrickleDown);
+
             m_Blocker = m_Document.rootVisualElement.Q<VisualElement>("Blocker");
             
             m_Blocker.style.opacity = 1.0f;
@@ -135,6 +153,43 @@ namespace HappyHarvest
         void Update()
         {
             m_TimerLabel.text = GameManager.Instance.CurrentTimeAsString();
+
+            // Escape closes the top-most open menu. Runs in Update (unaffected by
+            // the paused timeScale while a menu is open).
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CloseTopMenu();
+            }
+        }
+
+        // Closes the first open menu in priority order, if any.
+        private void CloseTopMenu()
+        {
+            foreach (var menu in m_DismissableMenus)
+            {
+                if (menu.IsOpen())
+                {
+                    menu.Close();
+                    return;
+                }
+            }
+        }
+
+        // Closes the open menu when a pointer press lands outside its panel.
+        private void OnDismissPointerDown(PointerDownEvent evt)
+        {
+            foreach (var menu in m_DismissableMenus)
+            {
+                if (!menu.IsOpen())
+                    continue;
+
+                var panel = menu.Panel();
+                if (panel == null || !panel.worldBound.Contains(evt.position))
+                    menu.Close();
+
+                // Only the top-most open menu participates in a given press.
+                return;
+            }
         }
 
         private void OnDestroy()
