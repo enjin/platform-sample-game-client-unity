@@ -15,7 +15,7 @@ new checks.
 - The SDK is referenced from `Packages/manifest.json` via a Git URL:
 
   ```json
-  "io.enjin.platform-sdk": "https://github.com/enjin/platform-csharp-sdk.git#upm/v3.0.0"
+  "io.enjin.platform-sdk": "https://github.com/enjin/platform-unity-sdk.git#v3.0.2"
   ```
 
   Unity will fetch and cache the package automatically on first project open.

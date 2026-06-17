@@ -22,6 +22,6 @@ MonoBehaviour:
   PlayerAnimatorTriggerUse: GenericToolSwing
   UseSound: []
   collectionId:
-    value: 124570
+    value: -1
   tokenId:
     value: 3
