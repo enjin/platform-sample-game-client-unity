@@ -38,13 +38,29 @@ namespace HappyHarvest.EnjinIntegration.Core {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
             Instance.LoadTokenFromPlayerPrefs();
-            GetManagedWalletTokens();
+        }
+
+        private void Start()
+        {
+            // Defer the initial wallet fetch until Start so that
+            // EnjinApiService.Awake (which may run after ours on the same
+            // prefab depending on component order) has had a chance to
+            // populate EnjinApiService.Instance. Fire-and-forget: prime the
+            // wallet cache if we already have a saved token. Subsequent UI
+            // opens read the cached value.
+            _ = GetManagedWalletTokens();
         }
 
         async public Task GetManagedWalletTokens()
         {
             if (IsLoggedIn())
             {
+                if (EnjinApiService.Instance == null)
+                {
+                    Debug.LogWarning("GetManagedWalletTokens called before EnjinApiService was initialized; skipping initial wallet prime.");
+                    return;
+                }
+
                 PlatformModels.ManagedWalletAccount allWalletTokens = await EnjinApiService.Instance.GetManagedWalletTokens(_authToken);
 
                 // Exit if the wallet data is null or contains no token accounts.
@@ -58,6 +74,11 @@ namespace HappyHarvest.EnjinIntegration.Core {
 
                 // Create a lookup set of in-game token identifiers for efficient filtering.
                 // We convert the SerializableBigInteger IDs to strings for comparison.
+                //
+                // The collectionId on each EnjinItem .asset must match the on-chain
+                // collection the sample server is bootstrapped against. Run the editor
+                // menu "Enjin > Stamp Collection ID onto EnjinItem Assets" once during
+                // setup to populate these from the server's /api/setup/collection-id.
                 var inGameTokenIds = new HashSet<(string, string)>(
                     mBlockchainTokens.Select(token => (
                         token.item.collectionId.ToString(),
@@ -69,8 +90,8 @@ namespace HappyHarvest.EnjinIntegration.Core {
                 // collectionId and tokenId match an entry in our in-game token set.
                 PlatformModels.TokenAccount[] filteredTokenAccounts = allWalletTokens.tokenAccounts.Where(walletTokenAccount =>
                 {
-                    string collectionId = walletTokenAccount.token.collection.collectionId;
-                    string tokenId = walletTokenAccount.token.tokenId;
+                    string collectionId = walletTokenAccount.token?.collection?.collectionId;
+                    string tokenId = walletTokenAccount.token?.tokenId;
 
                     // Check if the token from the wallet exists in our set of in-game tokens.
                     return inGameTokenIds.Contains((collectionId, tokenId));
@@ -95,6 +116,10 @@ namespace HappyHarvest.EnjinIntegration.Core {
                     OnWalletUpdated?.Invoke();
                 }
             }
+            else
+            {
+                Debug.LogWarning($"Mint of token #{tokenId} skipped: not logged in. Open the Settings menu and log in first.");
+            }
         }
 
         async public Task MeltToken(string tokenId, int amount)
@@ -107,6 +132,10 @@ namespace HappyHarvest.EnjinIntegration.Core {
                     OnWalletUpdated?.Invoke();
                 }
             }
+            else
+            {
+                Debug.LogWarning($"Melt of token #{tokenId} skipped: not logged in. Open the Settings menu and log in first.");
+            }
         }
 
         async public Task TransferToken(string tokenId, int amount, string recipient)
@@ -118,6 +147,10 @@ namespace HappyHarvest.EnjinIntegration.Core {
                 {
                     OnWalletUpdated?.Invoke();
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"Transfer of token #{tokenId} skipped: not logged in. Open the Settings menu and log in first.");
             }
         }
 
@@ -152,7 +185,9 @@ namespace HappyHarvest.EnjinIntegration.Core {
             SaveTokenToPlayerPrefs();
             Debug.Log("Login successful. Token generated.");
             OnLoginComplete?.Invoke(true);
-            GetManagedWalletTokens();
+            // Fire-and-forget: kick off an initial wallet fetch so the
+            // backpack has data ready the first time the player opens it.
+            _ = GetManagedWalletTokens();
         }
 
         /// <summary>
@@ -195,10 +230,18 @@ namespace HappyHarvest.EnjinIntegration.Core {
             if (mBlockchainTokens == null || mBlockchainTokens.Length == 0)
                 return null;
 
-            // Find the token by tokenId and collectionId
+            // Find the token by tokenId and collectionId. Both values on the
+            // EnjinItem .asset must be populated for this lookup to succeed;
+            // run the editor menu "Enjin > Stamp Collection ID onto EnjinItem
+            // Assets" once during setup if it fails because the collectionId
+            // is still the -1 placeholder.
+            string wantedCollectionId = collectionId?.ToString();
+            string wantedTokenId = tokenId?.ToString();
             return mBlockchainTokens.FirstOrDefault(token =>
-                token.item.tokenId.Equals(tokenId) &&
-                token.item.collectionId.Equals(collectionId));
+                token != null &&
+                token.item != null &&
+                token.item.tokenId.ToString() == wantedTokenId &&
+                token.item.collectionId.ToString() == wantedCollectionId);
         }
 
         public void RandomlyRevealToken(Vector3Int target)

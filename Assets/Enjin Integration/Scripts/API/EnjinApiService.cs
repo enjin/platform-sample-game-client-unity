@@ -96,7 +96,7 @@ namespace HappyHarvest.EnjinIntegration.API
 
         public async Task<bool> MintToken(string userAuth, string tokenId, int amount)
         {
-            var mintDataToPost = new MintRequest() { tokenId = tokenId, amount = amount };
+            var mintDataToPost = new MintRequest() { tokenId = tokenId, amount = amount.ToString() };
             var mintTokenRequest = CreateRequest(this.host + "/api/token/mint", RequestType.POST, mintDataToPost);
             AttachHeader(mintTokenRequest, "authorization", "bearer " + userAuth);
 
@@ -125,7 +125,7 @@ namespace HappyHarvest.EnjinIntegration.API
 
         public async Task<bool> MeltToken(string userAuth, string tokenId, int amount)
         {
-            var meltDataToPost = new MeltRequest() { tokenId = tokenId, amount = amount };
+            var meltDataToPost = new MeltRequest() { tokenId = tokenId, amount = amount.ToString() };
             var meltTokenRequest = CreateRequest(this.host + "/api/token/melt", RequestType.POST, meltDataToPost);
             AttachHeader(meltTokenRequest, "authorization", "bearer " + userAuth);
 
@@ -154,7 +154,7 @@ namespace HappyHarvest.EnjinIntegration.API
 
         public async Task<bool> TransferToken(string userAuth, string tokenId, int amount, string recipient)
         {
-            var transferDataToPost = new TransferRequest() { tokenId = tokenId, amount = amount, recipient = recipient };
+            var transferDataToPost = new TransferRequest() { tokenId = tokenId, amount = amount.ToString(), recipient = recipient };
             var transferTokenRequest = CreateRequest(this.host + "/api/token/transfer", RequestType.POST, transferDataToPost);
             AttachHeader(transferTokenRequest, "authorization", "bearer " + userAuth);
 

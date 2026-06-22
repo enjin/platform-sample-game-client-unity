@@ -1,3 +1,5 @@
-VisualElement > .unity-integer-field > .unity-base-field__label--with-dragger {
-    min-width: 158px;
+/* ItemDetails has no label (the item name is now its own column); collapse the
+   empty field label so the editable amount uses the full field width. */
+#ItemDetails .unity-base-field__label {
+    display: none;
 }

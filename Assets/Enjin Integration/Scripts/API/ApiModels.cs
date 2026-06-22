@@ -27,22 +27,24 @@ namespace HappyHarvest.EnjinIntegration.API
         public string password;
     }
 
+    // amount is a decimal string: token amounts are BigIntegers on-chain, so the
+    // wire format must carry values above int/long range.
     public class MintRequest
     {
         public string tokenId;
-        public int amount;
+        public string amount;
     }
 
     public class MeltRequest
     {
         public string tokenId;
-        public int amount;
+        public string amount;
     }
 
     public class TransferRequest
     {
         public string tokenId;
-        public int amount;
+        public string amount;
         public string recipient;
     }
 

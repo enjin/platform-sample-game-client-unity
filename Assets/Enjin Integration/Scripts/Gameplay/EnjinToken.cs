@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using HappyHarvest.EnjinIntegration.Data;
 
@@ -21,7 +22,15 @@ namespace HappyHarvest.EnjinIntegration.Gameplay
         {
             Debug.Log("Interacted with token");
 
-            item.Collect();
+            // Fire-and-forget: collecting talks to the sample server and we
+            // don't want to block the gameplay tick on it. The destruction
+            // below is intentional even if the mint fails; the visual token
+            // has been "picked up" from the player's point of view. We still
+            // observe the task so a faulted mint surfaces in the log instead of
+            // being swallowed as an unobserved exception.
+            _ = item.Collect().ContinueWith(
+                t => Debug.LogError($"[EnjinToken] Collect of token #{item.tokenId} faulted: {t.Exception?.GetBaseException().Message}"),
+                TaskContinuationOptions.OnlyOnFaulted);
 
             Destroy(gameObject);
         }
@@ -30,15 +39,17 @@ namespace HappyHarvest.EnjinIntegration.Gameplay
         {
             return item;
         }
-        
+
         public void Melt(int amount)
         {
-            item.Melt(amount);
+            // Fire-and-forget; UI refresh happens via EnjinManager.OnWalletUpdated.
+            _ = item.Melt(amount);
         }
 
         public void Transfer(string toAddress, int amount)
         {
-            item.Transfer(toAddress, amount);
+            // Fire-and-forget; UI refresh happens via EnjinManager.OnWalletUpdated.
+            _ = item.Transfer(toAddress, amount);
         }
     }
 }

@@ -17,6 +17,7 @@ ExportedObj/
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
@@ -53,3 +54,10 @@ crashlytics-build.properties
 *.temp
 *.DS_Store
 ._*
+
+# IDE
+.idea/
+
+# Godot port tooling — kept local only; nothing related to the port is committed.
+/Assets/Editor/
+/Assets/Editor.meta
