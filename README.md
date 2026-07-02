@@ -44,17 +44,7 @@ git clone https://github.com/enjin/platform-sample-game-client-unity.git
 3.  Select the cloned `platform-sample-game-client-unity` folder.
 4.  Open the project in the Unity Editor.
 
-The project pulls in the [Enjin Platform Unity SDK](https://github.com/enjin/platform-unity-sdk) as a UPM package over git. `Packages/manifest.json` references it as:
-
-```
-"io.enjin.platform-sdk": "https://github.com/enjin/platform-unity-sdk.git#v3.0.2"
-```
-
-Unity will fetch and cache the package on first project open.
-
-> **Note: the sample game itself does not use the Enjin Platform SDK.** All blockchain actions (mint, melt, transfer, wallet reads) go through the [C# game server](https://github.com/enjin/platform-sample-game-server)'s REST API — the client's `EnjinApiService` simply makes HTTP calls. The SDK lives on the **server**, where the API key is kept safe and away from the client.
->
-> The SDK UPM package above is pulled in only for the optional `EnjinSdkSmoke` harness ([see below](#optional-smoke-test-harnesses)), which exercises the SDK directly for verification. If your goal is to learn how to integrate Enjin into a game, the pattern to study here is **game client → your server → Enjin Platform SDK**, not calling the SDK from the client. (Curious what the UPM package is for and why this game doesn't use it? See [**What is the UPM package for, and when should you use it?**](#what-is-the-upm-package-for-and-when-should-you-use-it) at the end.)
+> **Note: all blockchain actions (mint, melt, transfer, wallet reads) go through the [C# game server](https://github.com/enjin/platform-sample-game-server)'s REST API** — the client's `EnjinApiService` simply makes HTTP calls. The API key and Platform SDK live on the **server**, safely away from the client. The pattern to study here is **game client → your server → Enjin Platform**, not calling the Platform directly from the client (which would ship your API token inside the build).
 
 -----
 
@@ -100,14 +90,13 @@ Once the game is running:
 
 -----
 
-## Optional: Smoke Test Harnesses
+## Optional: Smoke Test Harness
 
-Two standalone test scenes are included for verifying the integration without playing the full game:
+A standalone test scene is included for verifying the integration without playing the full game:
 
 - **`Assets/GameServerSmoke/`** — exercises the client's `EnjinApiService` end-to-end against a running game server (register/login, mint, melt, transfer, balance queries). Open via **Enjin → Open Game Server Smoke Scene** and press Play.
-- **`Assets/EnjinSdkSmoke/`** — calls the Enjin Platform directly through the [Unity SDK](https://github.com/enjin/platform-unity-sdk) UPM package, against the canary GraphQL endpoint and bypassing the game server. Useful for confirming the UPM package works end-to-end inside Unity, or telling whether a problem is in the package/Platform or in your server.
 
-See the `README.md` inside each folder for details.
+See the `README.md` inside the folder for details.
 
 -----
 
@@ -120,31 +109,13 @@ See the `README.md` inside each folder for details.
 
 -----
 
-## What is the UPM package for, and when should you use it?
+## Why a game server instead of calling the Platform directly?
 
-The Enjin UPM package (`io.enjin.platform-sdk`, added in [Step 3](#step-3-open-the-project-in-unity)) lets your Unity code talk to the Enjin Platform **directly**. Add it through the Package Manager and you can run Platform queries and mutations — mint, melt, transfer, wallet and balance reads — straight from C# in your game, with no backend of your own.
+**Security.** Every Platform call is authenticated with your Platform API token. If your Unity game called the Platform directly, that token would have to be embedded in the build you hand to players — and a token shipped inside a distributed app can be extracted and used to act as your account (mint, transfer, drain funds).
 
-### Then why doesn't this sample game use it?
+To avoid that, this sample keeps the token on a small [game server](https://github.com/enjin/platform-sample-game-server) it controls. The Unity client only ever calls that server, and the server makes the Platform calls on its behalf. The token never leaves your infrastructure. The server can also enforce its own rules — authentication, validation, rate limiting, anti-cheat — before it ever touches the Platform.
 
-**Security.** Every Platform call is authenticated with your Platform API token. If your Unity game calls the Platform directly, that token has to be embedded in the build you hand to players — and a token shipped inside a distributed app can be extracted and used to act as your account (mint, transfer, drain funds). 
-
-To avoid that, this sample keeps the token on a small [game server](https://github.com/enjin/platform-sample-game-server) it controls. The Unity client only ever calls that server, and the server makes the Platform calls on its behalf. The token never leaves your infrastructure. That client→server split is the recommended pattern for a game you actually publish.
-
-### When to use the UPM package vs. a server
-
-Use the **UPM package directly** when your token won't end up in untrusted hands:
-
-- **Prototyping and learning** — wire up Platform calls from the Editor to see how things work before building any backend. (The optional `EnjinSdkSmoke` scene in this project does exactly this.)
-- **Internal or trusted tools** — an in-house Unity Editor utility or admin tool that never leaves your team.
-- **Hackathons and demos** — where shipping to untrusted users isn't a concern.
-
-Use a **server in between** (what this sample demonstrates) for anything you distribute to players:
-
-- The API token stays on your server and never ships in the build.
-- The server can enforce its own rules — authentication, validation, rate limiting, anti-cheat — before it ever touches the Platform.
-- The client only knows about *your* API, never your Platform credentials.
-
-**Rule of thumb:** if players will run your build, keep the token behind a server. The UPM package is the quick path for prototypes and trusted tools; the server pattern is the safe path for shipping games.
+**Rule of thumb:** if players will run your build, keep the token behind a server. That client→server split is the recommended pattern for a game you actually publish.
 
 -----
 
