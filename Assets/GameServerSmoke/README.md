@@ -40,11 +40,8 @@ The generated scene file, the populated config asset, and their `.meta`
 files are gitignored (see `.gitignore`). The config can hold a password and
 the scene references a config GUID that's unique to your machine.
 
-## Relationship to `EnjinSdkSmoke`
+## Scope
 
-`EnjinSdkSmoke` exercises the **Enjin Platform SDK directly** against the
-canary platform &mdash; verifying the UPM package itself works inside Unity.
-
-`GameServerSmoke` (this one) exercises the **REST contract between the Unity
-client and our own C# sample server**. The server is what calls the SDK; we
-do not import the SDK from this smoke harness.
+`GameServerSmoke` exercises the **REST contract between the Unity client and
+our own C# sample server**. The server is what talks to the platform; the
+Unity client does not import any platform SDK.

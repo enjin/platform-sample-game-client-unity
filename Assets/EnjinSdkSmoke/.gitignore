@@ -1,7 +1,0 @@
-# Local SDK smoke config. Holds the platform API token, never commit.
-SdkSmokeConfig.asset
-SdkSmokeConfig.asset.meta
-
-# Locally generated scene (created on demand by Enjin ▸ Open SDK Smoke Scene).
-SdkSmoke.unity
-SdkSmoke.unity.meta
