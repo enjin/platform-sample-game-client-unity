@@ -385,15 +385,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "io.enjin.platform-sdk": {
-      "version": "https://github.com/enjin/platform-unity-sdk.git#v3.0.2",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.2.1"
-      },
-      "hash": "838135d243bd0812e93cd53e69d43f232dad9090"
-    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,
